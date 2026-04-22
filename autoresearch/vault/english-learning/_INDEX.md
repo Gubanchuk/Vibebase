@@ -1,45 +1,70 @@
 # English-learning vault — index
 
 **Last updated:** 2026-04-22
-**Seed run:** initial monthly-cadence pass, broader time window (past 12 months).
+**Status:** Expanded seed pass — 28 items covering theory foundations,
+Russian-L1 specifics, practical techniques, and SLA research.
 
 ## Counts
 
-- **Total:** 12 items
-- **By relevance:** `strong` 8, `moderate` 4
-- **By source type:** academic 3, professional-ELT 1, practitioner-blog 4, industry-analysis 2, applied-theory 2
+- **Total:** 28 items
+- **By relevance:** `strong` 18, `moderate` 10
+- **By type:** foundational theory (8), Russian-L1 specific (6), practical
+  techniques (7), research / meta-analysis (7)
 
-## By tag
+## By theme
 
-- `russian-l1` (5), `comprehensible-input` (3), `cefr` (4), `placement` (3), `grammar` (4), `tenses` (3), `prepositions` (1), `articles` (1), `llm-tutor` (3), `prompting` (1), `theory` (2), `empirical` (2), `research` (2), `advanced` (1), `aspect` (2)
+### SLA theoretical foundations
+- Krashen: Input Hypothesis, i+1, case for comprehensible input
+- Swain: Output Hypothesis + three functions
+- Long: Interaction Hypothesis + negotiation of meaning
+- Schmidt: Noticing Hypothesis + consciousness
+- Formulaic sequences — challenges to strong noticing
 
-## Chronological
+### Russian-L1 specifics
+- Top 10 mistakes (Heather Hughes)
+- Preposition transfer (OTUK)
+- Articles + tenses (Talk Schools)
+- Aspect vs tense (Polyglottist)
+- False friends curated bank
+- Word order + intonation
 
-- [2025-12-01] [strong][springer] Adaptive competency-based placement test — 10–12 Q beats 40 Q
-- [2025-11-12] [strong][frontiers-education] Empirical: LLM-calibrated input improves oral proficiency
-- [2025-10-15] [strong][talk-schools] Russian L1 — article & tense errors
-- [2025-10-02] [moderate][leonardo-english] Comprehensible Input practitioner's guide
-- [2025-09-25] [strong][community-blog] Aspect vs. tenses — teaching order matters
-- [2025-09-10] [strong][sdkrashen] Krashen i+1 canonical source
-- [2025-09-01] [strong][onlineteachersuk] Russian L1 — preposition transfer
-- [2025-08-22] [strong][oxford-elt] Oxford Placement Test methodology
-- [2025-08-05] [strong][codesignal] Prompt engineering 2025 — applied to tutoring
-- [2025-07-20] [moderate][heather-hughes] Advanced Russian-speaker errors (B2/C1)
-- [2025-07-01] [moderate][sciencedirect] CEFR-J writing assessment with LLM judge
-- [2025-06-15] [moderate][polyglottist] 5 key Russian-English grammar differences
+### Practical techniques
+- Shadowing for pronunciation
+- 4/3/2 fluency technique
+- Narrow reading (Krashen operationalized)
+- Task-based language teaching (TBLT)
+- Procedural repetition > identical
+- Video-mediated tasks + multimodal
+- Metacognitive strategies
 
-## Thematic groupings
+### Research + meta-analyses
+- LLM tutors — empirical hypothesis testing
+- CEFR scale descriptors (Council of Europe canonical)
+- Adaptive placement (Oxford + Springer)
+- Writing CEFR-J scoring (ScienceDirect)
+- Duolingo spaced repetition research
+- Foreign language anxiety + WTC
+- GenAI + TBLT meta-analysis
+- Frequent use reduces anxiety
+- Lexical chunks / collocations research
+- Prompt engineering 2025
 
-### Russian-L1 specifics (apply to every tutor system prompt)
-- article-omission, preposition-transfer, aspect/tense confusion, advanced false-friends, overall contrastive overview
+## Curated top 8 (for course Curator to prioritize)
 
-### Placement methodology (apply to placement flow)
-- Oxford canonical methodology, adaptive length research, LLM-based writing scoring
+1. **Krashen i+1 canonical** — foundation of all content calibration
+2. **Swain Output Hypothesis** — why exercises must require production
+3. **Long Interaction Hypothesis** — why AI should use negotiation strategies
+4. **Russian false friends bank** — high-impact vocabulary
+5. **Shadowing systematic review** — pronunciation training
+6. **Lexical chunks** — rethink vocabulary teaching
+7. **CEFR detailed descriptors** — authority for level assessment
+8. **GenAI + TBLT meta-analysis** — validates our approach
 
-### Tutor prompt design (apply to system-prompt files)
-- i+1 calibration, comprehensible-input practice, prompt-engineering best practice
+## Gaps still worth filling (next research pass)
 
-## Open questions
-
-- **TTS/STT empirical studies** — nothing surfaced this pass. Deferred with domain (v2 audio feature).
-- **Cross-age performance of AI tutors** — placeholder for future research pass (does our target demographic differ from the studied adult populations?).
+- Specific strategies for speaking anxiety reduction
+- Listening strategies (intensive vs extensive)
+- Vocabulary size research — how many words needed per level
+- Corrective feedback types (explicit vs implicit) effectiveness
+- Age effects on L2 acquisition (critical period hypothesis update)
+- Motivation frameworks (Dörnyei self-system 2009 → 2025 update)
