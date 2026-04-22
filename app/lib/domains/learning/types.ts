@@ -63,9 +63,29 @@ export interface LessonMastery {
   notes: string | null;
 }
 
-export interface TopicWithMastery extends CurriculumTopic {
-  mastery: LessonMastery | null;
+export type Stage = "foundation" | "core" | "advanced" | "optional";
+
+export interface TopicAnnotation {
+  userId: string;
+  topicId: string;
+  isBookmarked: boolean;
+  personalNotes: string;
+  updatedAt: string;
 }
+
+export interface TopicWithUserState extends CurriculumTopic {
+  mastery: LessonMastery | null;
+  annotation: TopicAnnotation | null;
+  stage: Stage;
+  isUnlocked: boolean;
+}
+
+/**
+ * Backward-compat alias. Все новые фетчи возвращают TopicWithUserState
+ * (annotation + stage + isUnlocked просто лишние поля). Старые импорты
+ * продолжают работать.
+ */
+export type TopicWithMastery = TopicWithUserState;
 
 export type MasteryState = "new" | "in-progress" | "mastered";
 

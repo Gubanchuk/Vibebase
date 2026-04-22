@@ -8,7 +8,10 @@ import { ArrowLeft } from "lucide-react";
 import { TopBar } from "@/components/shell/TopBar";
 import { Chip } from "@/components/ui/chip";
 import { MarkCompleteButton } from "@/components/skills/MarkCompleteButton";
-import { getSkillBySlug } from "@/lib/domains/skills/fixtures";
+import { requireAuth } from "@/lib/core/auth";
+import { getUserSkillBySlug } from "@/lib/domains/skills/repo";
+
+export const dynamic = "force-dynamic";
 
 export default async function LessonPage({
   params,
@@ -16,7 +19,8 @@ export default async function LessonPage({
   params: Promise<{ slug: string; lessonId: string }>;
 }) {
   const { slug, lessonId } = await params;
-  const skill = getSkillBySlug(slug);
+  const user = await requireAuth();
+  const skill = await getUserSkillBySlug(user.userId, slug);
   if (!skill) notFound();
 
   const lesson = skill.lessons.find(
@@ -57,11 +61,7 @@ export default async function LessonPage({
           ) : (
             <Chip mono>curated</Chip>
           )}
-          {node ? (
-            <Chip mono>
-              {node.title}
-            </Chip>
-          ) : null}
+          {node ? <Chip mono>{node.title}</Chip> : null}
         </div>
 
         <div className="flex items-start gap-3 mb-6">

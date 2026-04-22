@@ -1,6 +1,7 @@
 import { getSupabaseAdmin } from "@/lib/infra/supabase/admin";
 import type { UserId } from "@/lib/core/types";
 import type { PlacementResult, VibecodingLevel } from "./types";
+import { touchActivity } from "@/lib/domains/streak/repo";
 
 /**
  * Placement persistence для vibecoding (зеркало english/placement-repo).
@@ -44,6 +45,8 @@ export async function saveVibecodingAttempt(
       throw new Error("Не удалось обновить уровень в профиле.");
     }
   }
+
+  void touchActivity(userId);
 }
 
 export async function getCurrentVibecodingLevel(

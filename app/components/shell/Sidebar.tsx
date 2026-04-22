@@ -85,10 +85,14 @@ export function Sidebar({
   user,
   englishLevel,
   vibecodingLevel,
+  streakDays,
+  streakActiveToday,
 }: {
   user: AuthContext;
   englishLevel: string | null;
   vibecodingLevel: string | null;
+  streakDays: number;
+  streakActiveToday: boolean;
 }) {
   const pathname = usePathname();
   const isActive = (href: string) =>
@@ -183,9 +187,24 @@ export function Sidebar({
             <div className="text-[12px] font-medium truncate">{user.displayName}</div>
             <div
               className="text-[10px] mono flex items-center gap-1"
-              style={{ color: "var(--coral)" }}
+              style={{
+                color:
+                  streakDays === 0
+                    ? "var(--subtle)"
+                    : streakActiveToday
+                      ? "var(--coral)"
+                      : "var(--amber)",
+              }}
+              title={
+                streakDays === 0
+                  ? "Стрик пока не начат"
+                  : streakActiveToday
+                    ? "Сегодня активен"
+                    : "Сегодня ещё не был активен — не разорви серию"
+              }
             >
-              🔥 streak · 7 дней
+              🔥 streak · {streakDays} дн.
+              {streakDays > 0 && !streakActiveToday ? " ·!" : ""}
             </div>
           </div>
           <ChevronDown size={14} style={{ color: "var(--subtle)" }} />

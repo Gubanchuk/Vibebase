@@ -1,9 +1,11 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { RotateCw, Save, Pencil, X } from "lucide-react";
+import { toast } from "sonner";
 
 import {
   Dialog,
@@ -15,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/ui/chip";
 import { Textarea } from "@/components/ui/input";
 import { readTextStream } from "@/lib/core/stream-http";
+import { saveSkillLessonAction } from "@/app/(app)/skills/lessons-actions";
 
 type Status = "idle" | "streaming" | "ready" | "error";
 
@@ -22,6 +25,7 @@ export function LessonGenerateDialog({
   open,
   onOpenChange,
   skillId,
+  skillSlug,
   skillName,
   nodeId,
   nodeTitle,
@@ -29,10 +33,13 @@ export function LessonGenerateDialog({
   open: boolean;
   onOpenChange: (v: boolean) => void;
   skillId: string;
+  skillSlug: string;
   skillName: string;
   nodeId: string;
   nodeTitle: string;
 }) {
+  const router = useRouter();
+  const [saving, setSaving] = React.useState(false);
   const [content, setContent] = React.useState("");
   const [status, setStatus] = React.useState<Status>("idle");
   const [editing, setEditing] = React.useState(false);
@@ -178,24 +185,36 @@ export function LessonGenerateDialog({
           <Button
             variant="primary"
             size="sm"
-            disabled={status === "streaming"}
-            onClick={() => {
-              if (editing) setContent(draft);
-              handleOpenChange(false);
-              // Persistence is out-of-scope for MVP; placeholder saves to local
-              // storage so nothing is lost on refresh.
+            disabled={status === "streaming" || saving}
+            onClick={async () => {
+              const finalMd = editing ? draft : content;
+              if (!finalMd.trim()) {
+                toast.error("Урок пустой, нечего сохранять");
+                return;
+              }
+              setSaving(true);
               try {
-                window.localStorage.setItem(
-                  `skills:draft-lesson:${nodeId}`,
-                  editing ? draft : content
-                );
-              } catch {
-                /* ignore quota errors */
+                const res = await saveSkillLessonAction({
+                  skillSlug,
+                  nodeId,
+                  title: nodeTitle,
+                  contentMd: finalMd,
+                });
+                if (!res.ok) {
+                  toast.error(res.error);
+                  return;
+                }
+                toast.success("Урок сохранён");
+                if (editing) setContent(draft);
+                handleOpenChange(false);
+                router.refresh();
+              } finally {
+                setSaving(false);
               }
             }}
           >
             <Save size={13} strokeWidth={2} />
-            Save
+            {saving ? "Сохраняю…" : "Сохранить"}
           </Button>
         </div>
 

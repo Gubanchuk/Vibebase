@@ -1,6 +1,7 @@
 import { getSupabaseAdmin } from "@/lib/infra/supabase/admin";
 import type { UserId } from "@/lib/core/types";
 import type { PlacementResult } from "./types";
+import { touchActivity } from "@/lib/domains/streak/repo";
 
 /**
  * Placement persistence — каждая попытка добавляется как новая строка в
@@ -48,6 +49,8 @@ export async function savePlacementAttempt(
       throw new Error("Не удалось обновить уровень в профиле.");
     }
   }
+
+  void touchActivity(userId);
 }
 
 export async function getCurrentLevel(userId: UserId): Promise<string | null> {

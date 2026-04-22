@@ -226,6 +226,116 @@ async function resolveUniqueSlug(
   return `${base}-${Date.now()}`;
 }
 
+// ---------------------------------------------------------------------------
+// Lessons — save/load generated lesson content in skill_lessons table.
+// ---------------------------------------------------------------------------
+
+/**
+ * Проверяет, что `nodeId` принадлежит навыку юзера. Защищает от подстановки
+ * чужого node_id через server action.
+ */
+async function assertNodeBelongsToUser(
+  userId: UserId,
+  nodeId: string
+): Promise<boolean> {
+  const db = getSupabaseAdmin();
+  const { data } = await db
+    .from("skill_nodes")
+    .select("skill_id, skills!inner(user_id)")
+    .eq("id", nodeId)
+    .maybeSingle();
+  if (!data) return false;
+  const skills = (data as { skills?: { user_id?: string } | Array<{ user_id?: string }> }).skills;
+  const ownerId = Array.isArray(skills)
+    ? skills[0]?.user_id
+    : skills?.user_id;
+  return ownerId === userId;
+}
+
+/**
+ * Save or update a generated lesson for the given node. One active lesson per
+ * (node_id, user_id) — если уже есть, апдейтим content_md/title. Если нет —
+ * вставляем новую. Возвращает актуальный lesson row.
+ */
+export async function saveSkillLesson(
+  userId: UserId,
+  nodeId: string,
+  input: { title: string; contentMd: string; generatedByAi: boolean }
+): Promise<SkillLesson> {
+  const isOwner = await assertNodeBelongsToUser(userId, nodeId);
+  if (!isOwner) {
+    throw new Error("Узел не принадлежит юзеру");
+  }
+
+  const db = getSupabaseAdmin();
+
+  // Ищем активный урок на этом узле.
+  const { data: existing } = await db
+    .from("skill_lessons")
+    .select("*")
+    .eq("node_id", nodeId)
+    .eq("user_id", userId)
+    .is("archived_at", null)
+    .maybeSingle();
+
+  if (existing) {
+    const { data, error } = await db
+      .from("skill_lessons")
+      .update({
+        title: input.title,
+        content_md: input.contentMd,
+        generated_by_ai: input.generatedByAi,
+      })
+      .eq("id", existing.id)
+      .select("*")
+      .single();
+    if (error || !data) {
+      console.error("[skills-repo] update lesson failed:", error);
+      throw new Error(error?.message ?? "Не удалось обновить урок");
+    }
+    return rowToLesson(data);
+  }
+
+  const { data, error } = await db
+    .from("skill_lessons")
+    .insert({
+      node_id: nodeId,
+      user_id: userId,
+      title: input.title,
+      content_md: input.contentMd,
+      generated_by_ai: input.generatedByAi,
+    })
+    .select("*")
+    .single();
+  if (error || !data) {
+    console.error("[skills-repo] insert lesson failed:", error);
+    throw new Error(error?.message ?? "Не удалось сохранить урок");
+  }
+  return rowToLesson(data);
+}
+
+/**
+ * Загружает один урок по id, фильтруя по владельцу.
+ */
+export async function getSkillLessonById(
+  userId: UserId,
+  lessonId: string
+): Promise<SkillLesson | null> {
+  try {
+    const db = getSupabaseAdmin();
+    const { data } = await db
+      .from("skill_lessons")
+      .select("*")
+      .eq("id", lessonId)
+      .eq("user_id", userId)
+      .is("archived_at", null)
+      .maybeSingle();
+    return data ? rowToLesson(data) : null;
+  } catch {
+    return null;
+  }
+}
+
 export async function createSkillWithTree(
   userId: UserId,
   input: CreateSkillInput

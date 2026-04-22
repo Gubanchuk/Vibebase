@@ -6,8 +6,12 @@ import type {
   LessonContent,
   LessonMastery,
   QuizItem,
+  TopicAnnotation,
+  TopicWithUserState,
   TopicWithMastery,
 } from "./types";
+import { annotateTopics } from "./roadmap";
+import { touchActivity } from "@/lib/domains/streak/repo";
 
 // ─── Row mappers ───────────────────────────────────────────────────────
 
@@ -95,12 +99,49 @@ export async function listTopicsWithMastery(
   userId: UserId,
   domain: LearningDomain
 ): Promise<TopicWithMastery[]> {
-  const [topics, masteryList] = await Promise.all([
+  // Alias к listTopicsWithUserState — TopicWithMastery теперь type alias.
+  return listTopicsWithUserState(userId, domain);
+}
+
+/**
+ * Полный фетч: topic + mastery + annotation + derived (stage, isUnlocked).
+ * Один раз вызывается на рендере /learn для каждого домена, дальше страница
+ * фильтрует in-memory.
+ *
+ * Prerequisites в БД = uuid[], но в типе CurriculumTopic — string[] slugs
+ * (так маппер делал всегда, хотя значения там uuid). Чтобы isUnlocked
+ * работал корректно, конвертируем prerequisites-uuid → prerequisites-slug
+ * через map topicId→slug, собранный из текущего фетча.
+ */
+export async function listTopicsWithUserState(
+  userId: UserId,
+  domain: LearningDomain
+): Promise<TopicWithUserState[]> {
+  const [rawTopics, masteryList, annotations] = await Promise.all([
     listTopics(domain),
     listUserMastery(userId),
+    listUserAnnotations(userId),
   ]);
-  const byTopic = new Map(masteryList.map((m) => [m.topicId, m]));
-  return topics.map((t) => ({ ...t, mastery: byTopic.get(t.id) ?? null }));
+
+  // uuid → slug, чтобы нормализовать prerequisites.
+  const idToSlug = new Map<string, string>();
+  for (const t of rawTopics) idToSlug.set(t.id, t.slug);
+
+  const topics: CurriculumTopic[] = rawTopics.map((t) => ({
+    ...t,
+    prerequisites: t.prerequisites
+      .map((p) => idToSlug.get(p) ?? p) // uuid → slug; если уже slug — оставляем
+      .filter(Boolean),
+  }));
+
+  const masteryById = new Map(masteryList.map((m) => [m.topicId, m]));
+  const annotationById = new Map(annotations.map((a) => [a.topicId, a]));
+
+  const annotated = annotateTopics(topics, masteryById);
+  return annotated.map((t) => ({
+    ...t,
+    annotation: annotationById.get(t.id) ?? null,
+  }));
 }
 
 export async function getTopicBySlug(
@@ -257,6 +298,42 @@ export async function saveLesson(
   return rowToLesson(data);
 }
 
+// ─── Annotations (bookmarks + personal notes) ──────────────────────────
+
+function rowToAnnotation(r: Record<string, unknown>): TopicAnnotation {
+  return {
+    userId: String(r.user_id),
+    topicId: String(r.topic_id),
+    isBookmarked: Boolean(r.is_bookmarked),
+    personalNotes: String(r.personal_notes ?? ""),
+    updatedAt: String(r.updated_at),
+  };
+}
+
+/**
+ * Возвращает все аннотации юзера. Толерантно: если миграция 0005 ещё не
+ * применена — вернёт [], не уронит фетч страницы.
+ */
+export async function listUserAnnotations(
+  userId: UserId
+): Promise<TopicAnnotation[]> {
+  try {
+    const db = getSupabaseAdmin();
+    const { data, error } = await db
+      .from("topic_annotations")
+      .select("*")
+      .eq("user_id", userId);
+    if (error) {
+      console.warn("[learning-repo] listUserAnnotations:", error.message);
+      return [];
+    }
+    return (data ?? []).map(rowToAnnotation);
+  } catch (err) {
+    console.warn("[learning-repo] listUserAnnotations failed:", err);
+    return [];
+  }
+}
+
 // ─── Mastery ───────────────────────────────────────────────────────────
 
 export async function listUserMastery(
@@ -332,6 +409,8 @@ export async function recordQuizAttempt(
     console.error("[learning-repo] recordQuizAttempt failed:", error);
     throw new Error(error?.message ?? "recordQuizAttempt failed");
   }
+  // Стрик — best-effort, не блокируем.
+  void touchActivity(userId);
   return rowToMastery(data);
 }
 
@@ -355,4 +434,5 @@ export async function setExercisePassed(
     },
     { onConflict: "user_id,topic_id" }
   );
+  if (passed) void touchActivity(userId);
 }

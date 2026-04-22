@@ -4,14 +4,39 @@ import { TopBar } from "@/components/shell/TopBar";
 import { Button } from "@/components/ui/button";
 import { SkillCard } from "@/components/skills/SkillCard";
 import { NewSkillDialog } from "@/components/skills/NewSkillDialog";
+import {
+  LanguageProficiencyCard,
+  ENGLISH_LEVEL_SCALE,
+  VIBECODING_LEVEL_SCALE,
+} from "@/components/skills/LanguageProficiencyCard";
 import { requireAuth } from "@/lib/core/auth";
 import { listUserSkills } from "@/lib/domains/skills/repo";
+import {
+  getCurrentLevel as getEnglishLevel,
+  listPlacementHistory,
+} from "@/lib/domains/english/placement-repo";
+import {
+  getCurrentVibecodingLevel,
+  listVibecodingHistory,
+} from "@/lib/domains/vibecoding/placement-repo";
 
 export const dynamic = "force-dynamic";
 
 export default async function SkillsIndexPage() {
   const user = await requireAuth();
-  const skills = await listUserSkills(user.userId);
+  const [
+    skills,
+    englishLevel,
+    englishHistory,
+    vibecodingLevel,
+    vibecodingHistory,
+  ] = await Promise.all([
+    listUserSkills(user.userId),
+    getEnglishLevel(user.userId),
+    listPlacementHistory(user.userId, 10),
+    getCurrentVibecodingLevel(user.userId),
+    listVibecodingHistory(user.userId, 10),
+  ]);
   const activeCount = skills.filter((s) => s.archivedAt === null).length;
 
   return (
@@ -49,6 +74,54 @@ export default async function SkillsIndexPage() {
             ? "Ни одного навыка. Создай первый — AI соберёт roadmap."
             : `${activeCount} активных · генерируй уроки, прокачивай по дереву, держи прогресс перед глазами.`}
         </p>
+
+        <div className="mb-8">
+          <div
+            className="text-[10px] mono uppercase tracking-wider mb-2"
+            style={{ color: "var(--subtle)" }}
+          >
+            // проценция · плейсмент-результаты
+          </div>
+          <div className="grid gap-3 grid-cols-1 lg:grid-cols-2">
+            <LanguageProficiencyCard
+              title="English"
+              subtitle="CEFR-уровень + структурный курс на /learn"
+              emoji="🇬🇧"
+              accent="coral"
+              currentLevel={englishLevel}
+              history={englishHistory}
+              retakeHref="/english/placement"
+              retakeLabel={
+                englishLevel ? "пересдать плейсмент" : "пройти плейсмент"
+              }
+              levelScale={ENGLISH_LEVEL_SCALE}
+              roadmapHref="/learn"
+              roadmapLabel="открыть роадмап"
+            />
+            <LanguageProficiencyCard
+              title="Vibecoding"
+              subtitle="newbie → practitioner → architect → maintainer"
+              emoji="⚡"
+              accent="violet"
+              currentLevel={vibecodingLevel}
+              history={vibecodingHistory}
+              retakeHref="/vibecoding/placement"
+              retakeLabel={
+                vibecodingLevel ? "пересдать плейсмент" : "пройти плейсмент"
+              }
+              levelScale={VIBECODING_LEVEL_SCALE}
+              roadmapHref="/learn"
+              roadmapLabel="открыть роадмап"
+            />
+          </div>
+        </div>
+
+        <div
+          className="text-[10px] mono uppercase tracking-wider mb-2"
+          style={{ color: "var(--subtle)" }}
+        >
+          // свои навыки
+        </div>
 
         {skills.length === 0 ? (
           <EmptySkillsState />

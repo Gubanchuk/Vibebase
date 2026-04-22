@@ -209,6 +209,7 @@ export function NodeSheet({
         open={genOpen}
         onOpenChange={setGenOpen}
         skillId={skill.id}
+        skillSlug={skill.slug}
         skillName={skill.name}
         nodeId={node.id}
         nodeTitle={node.title}
