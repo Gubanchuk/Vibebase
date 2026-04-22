@@ -12,6 +12,7 @@ import {
   Settings,
   ChevronDown,
   Zap,
+  GraduationCap,
 } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { Logo } from "./Logo";
@@ -21,7 +22,7 @@ type NavItem = {
   href: string;
   label: string;
   Icon: typeof LayoutDashboard;
-  section: "nav" | "sys";
+  section: "nav" | "tutor" | "sys";
   badge?: { label: string; tone: "coral" | "success" | "violet"; mono?: boolean };
   trailing?: string;
 };
@@ -31,28 +32,34 @@ function buildNav(
   vibecodingLevel: string | null
 ): NavItem[] {
   return [
+    // ── Основная обучающая часть ────────────────────────────────────────
     { href: "/dashboard", label: "Дашборд", Icon: LayoutDashboard, section: "nav" },
+    { href: "/learn", label: "Учёба", Icon: GraduationCap, section: "nav" },
+    { href: "/skills", label: "Свои навыки", Icon: Layers3, section: "nav" },
+    { href: "/radar", label: "Радар", Icon: Radar, section: "nav" },
+    { href: "/journal", label: "Дневник", Icon: BookOpen, section: "nav" },
+
+    // ── Тьютор в режиме свободного чата (дополнение к /learn) ──────────
     {
       href: "/english",
       label: "Английский",
       Icon: MessagesSquare,
-      section: "nav",
+      section: "tutor",
       ...(englishLevel
         ? { badge: { label: englishLevel, tone: "coral" as const } }
         : {}),
     },
     {
       href: "/vibecoding",
-      label: "Вайбкодинг",
+      label: "Vibecoding",
       Icon: Zap,
-      section: "nav",
+      section: "tutor",
       ...(vibecodingLevel
         ? { badge: { label: vibecodingLevel, tone: "violet" as const, mono: true } }
         : {}),
     },
-    { href: "/skills", label: "Прокачка навыков", Icon: Layers3, section: "nav" },
-    { href: "/radar", label: "Радар", Icon: Radar, section: "nav" },
-    { href: "/journal", label: "Дневник", Icon: BookOpen, section: "nav" },
+
+    // ── Система ─────────────────────────────────────────────────────────
     { href: "/settings/usage", label: "Использование", Icon: LineChart, section: "sys" },
     { href: "/settings", label: "Настройки", Icon: Settings, section: "sys" },
   ];
@@ -112,6 +119,24 @@ export function Sidebar({
           Навигация
         </div>
         {NAV.filter((n) => n.section === "nav").map(({ href, label, Icon, badge }) => (
+          <Link
+            key={href}
+            href={href}
+            className={cn("nav-item", isActive(href) && "active")}
+          >
+            <Icon size={15} strokeWidth={1.8} />
+            {label}
+            {badge ? <Badge {...badge} /> : null}
+          </Link>
+        ))}
+
+        <div
+          className="px-2 pt-4 pb-1 text-[10px] mono uppercase tracking-wider"
+          style={{ color: "var(--subtle)" }}
+        >
+          Тьютор (чат)
+        </div>
+        {NAV.filter((n) => n.section === "tutor").map(({ href, label, Icon, badge }) => (
           <Link
             key={href}
             href={href}
