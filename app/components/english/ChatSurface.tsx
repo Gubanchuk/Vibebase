@@ -231,13 +231,13 @@ export function ChatSurface({
           placeholder={placeholderFor(mode)}
           rows={1}
           className={cn(
-            "flex-1 resize-none px-3 py-2.5 text-[13px] leading-relaxed rounded-md",
+            "flex-1 resize-none px-3 py-2.5 text-[16px] md:text-[13px] leading-relaxed rounded-md",
             "bg-[color:var(--surface-2)] border border-[color:var(--border)]",
             "text-[color:var(--content)] placeholder:text-[color:var(--subtle)]",
             "outline-none transition focus:border-[color:var(--coral)] focus:ring-1 focus:ring-[color:var(--coral)]",
             "scrollbar-slim"
           )}
-          style={{ minHeight: 42, maxHeight: 200 }}
+          style={{ minHeight: 44, maxHeight: 200 }}
           aria-label="Message input"
         />
         {isStreaming ? (
@@ -246,7 +246,7 @@ export function ChatSurface({
             size="md"
             onClick={stop}
             aria-label="Stop generation"
-            className="h-[42px]"
+            className="h-[44px]"
           >
             <Square size={14} strokeWidth={1.9} />
             Стоп
@@ -258,7 +258,7 @@ export function ChatSurface({
             onClick={() => void send()}
             disabled={!input.trim()}
             aria-label="Send message"
-            className="h-[42px]"
+            className="h-[44px]"
           >
             <Send size={14} strokeWidth={1.9} />
             Отправить
@@ -291,7 +291,7 @@ function Bubble({
     >
       <div
         className={cn(
-          "chat-bubble",
+          "chat-bubble max-w-[85%] md:max-w-[640px]",
           isUser ? "chat-bubble-user whitespace-pre-wrap" : "chat-bubble-assistant",
           streaming && !content && "stream-caret"
         )}

@@ -291,13 +291,13 @@ export function JournalEditor({ entryId, initialEdit = false }: EditorProps) {
             onChange={(e) => updateEntry({ title: e.target.value })}
             className={cn(
               "w-full bg-transparent border-0 outline-none",
-              "text-[28px] md:text-[32px] font-semibold tracking-tight leading-tight",
+              "text-[22px] md:text-[32px] font-semibold tracking-tight leading-tight break-words",
               "placeholder:text-[color:var(--subtle)]",
               serifFirst ? "first-letter:font-[var(--font-instrument)] first-letter:italic first-letter:font-normal" : ""
             )}
           />
         ) : (
-          <h1 className="text-[28px] md:text-[32px] font-semibold tracking-tight leading-tight">
+          <h1 className="text-[22px] md:text-[32px] font-semibold tracking-tight leading-tight">
             {title || <span className="serif-italic" style={{ color: "var(--subtle)" }}>Без названия</span>}
           </h1>
         )}
@@ -377,7 +377,7 @@ function EditorPane({
       onChange={(e) => onChange(e.target.value)}
       spellCheck
       placeholder="Напиши что-нибудь. Markdown поддерживается."
-      className="w-full min-h-[60dvh] bg-transparent outline-none resize-none border-0 p-0 text-[13.5px] leading-[1.7] placeholder:text-[color:var(--subtle)]"
+      className="w-full min-h-[60dvh] bg-transparent outline-none resize-none border-0 p-0 text-[16px] md:text-[14px] leading-[1.7] placeholder:text-[color:var(--subtle)]"
       style={{ color: "var(--content)" }}
     />
   );
@@ -395,7 +395,7 @@ function PreviewPane({ markdown }: { markdown: string }) {
     );
   }
   return (
-    <article className="prose-md">
+    <article className="prose-md break-words">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeSlug]}

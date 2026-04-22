@@ -41,7 +41,7 @@ export default async function SkillDetailPage({
       />
 
       <section className="px-4 md:px-6 py-6">
-        <div className="flex items-start justify-between gap-4 mb-5 flex-wrap">
+        <div className="flex flex-col md:flex-row items-start md:items-start md:justify-between gap-4 mb-5">
           <div className="flex items-start gap-3">
             <div className="text-[32px] leading-none" aria-hidden>
               {skill.emoji}
@@ -53,8 +53,8 @@ export default async function SkillDetailPage({
               >
                 // skill · <span style={{ color: "var(--coral)" }}>{percent}%</span>
               </div>
-              <h1 className="text-[24px] md:text-[28px] font-bold tracking-tight leading-tight">
-                <span className="serif-italic text-[26px] md:text-[30px]">
+              <h1 className="text-[22px] md:text-[28px] font-bold tracking-tight leading-tight break-words">
+                <span className="serif-italic text-[24px] md:text-[30px]">
                   {skill.name.split(" ")[0]}
                 </span>
                 {skill.name.includes(" ")

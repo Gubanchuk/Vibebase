@@ -526,3 +526,22 @@ body {
 }
 .chat-md strong { color: var(--content); font-weight: 600; }
 .chat-md hr { margin: 0.7em 0; }
+
+/* ─── Mobile safe-area & viewport utilities ─── */
+.pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+.pt-safe { padding-top: env(safe-area-inset-top); }
+
+/* iOS Safari zoom prevention — apply to all text inputs */
+@media (max-width: 640px) {
+  input, textarea, select {
+    font-size: 16px;
+  }
+  /* Allow smaller inline-code */
+  .chat-md code, .prose-md code { font-size: 0.86em; }
+}
+
+/* Better tap-target indicators on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .nav-item:active { background: var(--surface-3); }
+  .btn:active { transform: scale(0.97); }
+}

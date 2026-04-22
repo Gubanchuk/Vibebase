@@ -68,18 +68,19 @@ export function CommandPaletteProvider({ children }: { children: React.ReactNode
     <Ctx.Provider value={{ open, close, isOpen }}>
       {children}
       {isOpen ? (
-        <div className="fixed inset-0 z-50 flex items-start justify-center pt-[14vh] px-4">
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-[8vh] sm:pt-[14vh] px-2 sm:px-4">
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={close} />
           <Command
             label="Command palette"
-            className="relative w-full max-w-xl card p-0 overflow-hidden border border-[color:var(--border)]"
+            className="relative w-[min(620px,calc(100vw-16px))] card p-0 overflow-hidden border border-[color:var(--border)]"
           >
             <Command.Input
               autoFocus
               placeholder="Что делаем? (перейти, создать, настроить…)"
-              className="w-full px-4 py-3.5 text-[14px] bg-transparent border-b border-[color:var(--border-2)] outline-none text-[color:var(--content)] placeholder:text-[color:var(--subtle)]"
+              // text-[16px] prevents iOS Safari auto-zoom on focus
+              className="w-full px-4 py-3.5 text-[16px] sm:text-[14px] bg-transparent border-b border-[color:var(--border-2)] outline-none text-[color:var(--content)] placeholder:text-[color:var(--subtle)]"
             />
-            <Command.List className="max-h-[50vh] overflow-y-auto scrollbar-slim p-2">
+            <Command.List className="max-h-[40dvh] sm:max-h-[50vh] overflow-y-auto scrollbar-slim p-2">
               <Command.Empty className="px-3 py-6 text-center text-[12.5px] text-[color:var(--muted)]">
                 Ничего не найдено.
               </Command.Empty>
@@ -91,7 +92,8 @@ export function CommandPaletteProvider({ children }: { children: React.ReactNode
                   <Command.Item
                     key={a.href}
                     onSelect={() => go(a.href)}
-                    className="px-3 py-2 rounded-md flex items-center gap-2.5 text-[13px] cursor-pointer data-[selected=true]:bg-[color:var(--surface-2)]"
+                    // min-h-11 (44px) matches Apple HIG tap-target minimum on touch
+                    className="px-3 py-2.5 sm:py-2 min-h-11 rounded-md flex items-center gap-2.5 text-[14px] sm:text-[13px] cursor-pointer data-[selected=true]:bg-[color:var(--surface-2)]"
                   >
                     <a.Icon size={14} strokeWidth={1.9} style={{ color: a.accent === "coral" ? "var(--coral)" : "var(--violet)" }} />
                     {a.label}
@@ -106,17 +108,18 @@ export function CommandPaletteProvider({ children }: { children: React.ReactNode
                   <Command.Item
                     key={a.href}
                     onSelect={() => go(a.href)}
-                    className="px-3 py-2 rounded-md flex items-center gap-2.5 text-[13px] cursor-pointer data-[selected=true]:bg-[color:var(--surface-2)]"
+                    className="px-3 py-2.5 sm:py-2 min-h-11 rounded-md flex items-center gap-2.5 text-[14px] sm:text-[13px] cursor-pointer data-[selected=true]:bg-[color:var(--surface-2)]"
                   >
                     <a.Icon size={14} strokeWidth={1.9} style={{ color: "var(--muted)" }} />
-                    <span>{a.label}</span>
-                    <span className="ml-auto text-[11px]" style={{ color: "var(--subtle)" }}>{a.hint}</span>
+                    <span className="truncate">{a.label}</span>
+                    <span className="ml-auto text-[11px] shrink-0 hidden sm:inline" style={{ color: "var(--subtle)" }}>{a.hint}</span>
                   </Command.Item>
                 ))}
               </Command.Group>
             </Command.List>
+            {/* Keyboard hints hidden on mobile (no physical keyboard in typical touch flow) */}
             <div
-              className="flex items-center gap-3 px-3 py-2 border-t text-[11px]"
+              className="hidden md:flex items-center gap-3 px-3 py-2 border-t text-[11px]"
               style={{ borderColor: "var(--border-2)", color: "var(--subtle)" }}
             >
               <span><span className="kbd">↑</span> <span className="kbd">↓</span> навигация</span>

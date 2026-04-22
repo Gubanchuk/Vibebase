@@ -116,7 +116,7 @@ export function VibecodingPlacementFlow({
 
   if (phase === "idle") {
     return (
-      <Card className={cn("flex flex-col gap-3", compact ? "p-5" : "p-6 md:p-8")}>
+      <Card className={cn("flex flex-col gap-3", compact ? "p-5" : "p-5 md:p-8")}>
         <h2
           className={cn(
             "font-semibold tracking-tight",
@@ -150,7 +150,7 @@ export function VibecodingPlacementFlow({
   if (phase === "answering" && current) {
     const progress = (index + (picked !== null ? 1 : 0)) / total;
     return (
-      <Card className={cn("flex flex-col gap-5", compact ? "p-5" : "p-6 md:p-8")}>
+      <Card className={cn("flex flex-col gap-5", compact ? "p-5" : "p-5 md:p-8")}>
         <div className="flex items-center gap-3">
           <div
             className="h-1.5 flex-1 rounded-full overflow-hidden"
@@ -254,7 +254,7 @@ export function VibecodingPlacementFlow({
     return (
       <Card
         glow
-        className={cn("flex flex-col gap-4", compact ? "p-5" : "p-6 md:p-8")}
+        className={cn("flex flex-col gap-4", compact ? "p-5" : "p-5 md:p-8")}
       >
         <div className="flex items-center gap-2 flex-wrap">
           <Chip tone="coral" className="mono">
@@ -275,7 +275,7 @@ export function VibecodingPlacementFlow({
           <h2
             className={cn(
               "gradient-text font-bold tracking-tight",
-              compact ? "text-[40px]" : "text-[56px] md:text-[72px]"
+              compact ? "text-[40px]" : "text-[40px] md:text-[72px]"
             )}
             style={{ lineHeight: 1 }}
           >

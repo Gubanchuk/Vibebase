@@ -16,7 +16,7 @@ export default function SettingsPage() {
     <>
       <TopBar breadcrumb={[{ label: "Настройки", active: true }]} />
       <section className="p-4 md:p-6 max-w-3xl">
-        <h1 className="text-[26px] font-bold tracking-tight mb-1">
+        <h1 className="text-[22px] md:text-[26px] font-bold tracking-tight mb-1">
           <span className="serif-italic" style={{ color: "var(--amber)" }}>Настройки</span>
         </h1>
         <p className="text-sm mb-6" style={{ color: "var(--muted)" }}>

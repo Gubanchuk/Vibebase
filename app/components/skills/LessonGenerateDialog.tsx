@@ -212,7 +212,7 @@ export function LessonGenerateDialog({
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
               rows={18}
-              className="min-h-[320px] bg-transparent border-0 focus:ring-0 focus:border-0 mono text-[12.5px]"
+              className="min-h-[320px] bg-transparent border-0 focus:ring-0 focus:border-0 mono text-[16px] md:text-[12.5px]"
             />
           ) : (
             <div className="prose-md">

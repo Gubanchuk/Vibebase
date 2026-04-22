@@ -55,7 +55,7 @@ export default async function VibecodingPage() {
     <>
       <TopBar breadcrumb={[{ label: "Вайбкодинг", active: true }]} />
 
-      <section className="px-4 md:px-6 py-6">
+      <section className="px-4 md:px-6 md:px-8 py-5 md:py-6">
         <div
           className="text-[11px] mono uppercase tracking-wider mb-2"
           style={{ color: "var(--subtle)" }}
@@ -64,10 +64,10 @@ export default async function VibecodingPage() {
         </div>
 
         <div className="flex items-start justify-between gap-3 flex-wrap mb-2">
-          <h1 className="text-[26px] md:text-[30px] font-bold tracking-tight leading-tight">
+          <h1 className="text-[22px] md:text-[30px] font-bold tracking-tight leading-tight">
             Вайбкодинг{" "}
             <span
-              className="serif-italic text-[28px] md:text-[32px]"
+              className="serif-italic text-[24px] md:text-[32px]"
               style={{ color: "var(--amber)" }}
             >
               ежедневно
@@ -201,7 +201,7 @@ function ModeCard({ mode }: { mode: VibecodingMode }) {
 
 function NoLevelState() {
   return (
-    <section className="px-4 md:px-6 py-10">
+    <section className="px-4 md:px-6 md:px-8 py-6 md:py-10">
       <div className="mx-auto max-w-xl">
         <div
           className="text-[11px] mono uppercase tracking-wider mb-2"
@@ -209,10 +209,10 @@ function NoLevelState() {
         >
           // vibecoding · <span style={{ color: "var(--coral)" }}>first-run</span>
         </div>
-        <h1 className="text-[26px] md:text-[30px] font-bold tracking-tight leading-tight mb-2">
+        <h1 className="text-[22px] md:text-[30px] font-bold tracking-tight leading-tight mb-2">
           Определи{" "}
           <span
-            className="serif-italic text-[28px] md:text-[32px]"
+            className="serif-italic text-[24px] md:text-[32px]"
             style={{ color: "var(--amber)" }}
           >
             уровень
@@ -229,7 +229,7 @@ function NoLevelState() {
         <Link href="/vibecoding/placement">
           <Card
             glow
-            className="card-glow glow-ring p-6 cursor-pointer flex items-start gap-4 transition hover:scale-[1.01]"
+            className="card-glow glow-ring p-5 md:p-6 cursor-pointer flex flex-col sm:flex-row items-start gap-4 transition hover:scale-[1.01]"
           >
             <div
               className="w-14 h-14 rounded-xl flex items-center justify-center shrink-0"

@@ -23,17 +23,23 @@ export const DialogContent = React.forwardRef<
       ref={ref}
       className={cn(
         "fixed z-50 card scrollbar-slim",
+        // center: on mobile take almost full width (16px gutter), becomes clamped on sm+
         side === "center" &&
-          "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(640px,92vw)] max-h-[85dvh] overflow-y-auto p-5 rounded-xl",
+          "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100vw-16px)] sm:w-[min(640px,92vw)] max-h-[85dvh] overflow-y-auto p-4 sm:p-5 rounded-xl",
+        // right: on mobile becomes a bottom sheet (easier one-hand reach),
+        // on sm+ reverts to the original right-side drawer
         side === "right" &&
-          "right-0 top-0 h-dvh w-[min(480px,96vw)] overflow-y-auto rounded-none rounded-l-xl p-5 border-r-0",
+          "right-0 bottom-0 top-auto h-[85dvh] w-full rounded-t-xl rounded-b-none border-t border-[color:var(--border)] border-l-0 border-r-0 overflow-y-auto p-4 sm:p-5 sm:top-0 sm:bottom-auto sm:h-dvh sm:w-[min(480px,96vw)] sm:rounded-none sm:rounded-l-xl sm:border-t-0 sm:border-l sm:border-r-0",
         className
       )}
       {...props}
     >
       {children}
-      <DialogPrimitive.Close className="absolute right-3 top-3 rounded p-1 text-[color:var(--muted)] hover:text-[color:var(--content)] hover:bg-[color:var(--surface-2)]">
-        <X size={15} />
+      <DialogPrimitive.Close
+        aria-label="Close"
+        className="absolute right-2 top-2 rounded p-2 min-w-11 min-h-11 flex items-center justify-center text-[color:var(--muted)] hover:text-[color:var(--content)] hover:bg-[color:var(--surface-2)]"
+      >
+        <X size={16} />
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>
     </DialogPrimitive.Content>

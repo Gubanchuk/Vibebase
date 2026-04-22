@@ -33,13 +33,13 @@ export function BudgetEditor({ initial }: { initial: BudgetConfig }) {
   return (
     <Card className="p-4 flex flex-wrap gap-4 items-end">
       <Field label="Дневной cap, $" mono>
-        <Input type="number" step="0.5" min="0" value={daily} onChange={(e) => setDaily(Number(e.target.value))} className="w-28" />
+        <Input type="number" inputMode="decimal" step="0.5" min="0" value={daily} onChange={(e) => setDaily(Number(e.target.value))} className="w-28 text-[16px] md:text-[13px]" />
       </Field>
       <Field label="Месячный cap, $" mono>
-        <Input type="number" step="1" min="0" value={monthly} onChange={(e) => setMonthly(Number(e.target.value))} className="w-28" />
+        <Input type="number" inputMode="decimal" step="1" min="0" value={monthly} onChange={(e) => setMonthly(Number(e.target.value))} className="w-28 text-[16px] md:text-[13px]" />
       </Field>
       <Field label="Per-call max tokens" mono>
-        <Input type="number" step="128" min="128" value={perCall} onChange={(e) => setPerCall(Number(e.target.value))} className="w-32" />
+        <Input type="number" inputMode="numeric" step="128" min="128" value={perCall} onChange={(e) => setPerCall(Number(e.target.value))} className="w-32 text-[16px] md:text-[13px]" />
       </Field>
       <Button variant="primary" onClick={onSave} disabled={!dirty || pending}>
         {pending ? "Сохраняю…" : "Сохранить"}

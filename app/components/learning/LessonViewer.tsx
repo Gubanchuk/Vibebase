@@ -297,7 +297,7 @@ export function LessonViewer({
                           });
                         }}
                         className={cn(
-                          "w-full text-left px-4 py-3 rounded-md border transition flex items-center gap-3 text-[13px]",
+                          "w-full text-left px-4 py-3 min-h-[56px] rounded-md border transition flex items-center gap-3 text-[13px]",
                           !showResult && selected && "border-[color:var(--coral)]",
                           !showResult && !selected && "border-[color:var(--border)] hover:border-[color:var(--border-hover)]",
                           isCorrect && "border-[color:var(--success)]",
@@ -372,8 +372,8 @@ export function LessonViewer({
         </div>
       </Section>
 
-      <Card className="p-4 flex items-center gap-3">
-        <div className="flex-1 text-[12.5px]" style={{ color: "var(--muted)" }}>
+      <Card className="p-4 flex flex-wrap items-center gap-2 md:gap-3">
+        <div className="flex-1 min-w-0 text-[12.5px]" style={{ color: "var(--muted)" }}>
           Урок сгенерирован{" "}
           <span className="mono" style={{ color: "var(--content)" }}>
             {new Date(lesson.generatedAt).toLocaleString("ru-RU", {
@@ -432,7 +432,7 @@ function Section({
       <button
         type="button"
         onClick={onToggle}
-        className="w-full px-5 py-3.5 flex items-center gap-3 text-left"
+        className="w-full px-4 md:px-5 py-3.5 min-h-[56px] flex items-center gap-3 text-left"
         aria-expanded={isOpen}
         aria-controls={`section-${id}`}
       >
@@ -453,7 +453,7 @@ function Section({
       {isOpen ? (
         <div
           id={`section-${id}`}
-          className="px-5 pb-5 pt-1 border-t"
+          className="px-4 md:px-5 pb-5 pt-1 border-t"
           style={{ borderColor: "var(--border-2)" }}
         >
           {children}
@@ -465,7 +465,7 @@ function Section({
 
 function Markdown({ md }: { md: string }) {
   return (
-    <div className="prose-md">
+    <div className="prose-md [&_table]:block [&_table]:w-full [&_table]:overflow-x-auto [&_pre]:overflow-x-auto">
       <ReactMarkdown remarkPlugins={[remarkGfm]}>{md}</ReactMarkdown>
     </div>
   );

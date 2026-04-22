@@ -36,7 +36,7 @@ export default async function UsagePage() {
         >
           // cost dashboard · <span style={{ color: "var(--coral)" }}>live</span>
         </div>
-        <h1 className="text-[26px] font-bold tracking-tight mb-1">
+        <h1 className="text-[22px] md:text-[26px] font-bold tracking-tight mb-1">
           Куда утекают <span className="serif-italic" style={{ color: "var(--amber)" }}>токены</span>
         </h1>
         <p className="text-sm" style={{ color: "var(--muted)" }}>
@@ -100,17 +100,17 @@ export default async function UsagePage() {
                 className="px-4 py-3 flex items-center gap-4"
                 style={{ borderColor: "var(--border-2)" }}
               >
-                <div className="w-44 text-[13px] mono">{d.domain}</div>
+                <div className="w-28 md:w-44 text-[13px] mono truncate">{d.domain}</div>
                 <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: "var(--surface-2)" }}>
                   <div
                     className="h-full transition-all"
                     style={{ width: `${pct}%`, background: "var(--gradient-hot)" }}
                   />
                 </div>
-                <div className="w-20 text-right mono text-[12px]" style={{ color: "var(--content)" }}>
+                <div className="w-16 md:w-20 text-right mono text-[12px]" style={{ color: "var(--content)" }}>
                   ${d.cost.toFixed(4)}
                 </div>
-                <div className="w-20 text-right mono text-[11px]" style={{ color: "var(--subtle)" }}>
+                <div className="hidden sm:block w-20 text-right mono text-[11px]" style={{ color: "var(--subtle)" }}>
                   {d.calls} calls
                 </div>
               </div>
@@ -134,16 +134,16 @@ export default async function UsagePage() {
           // recent calls (50)
         </div>
         <Card className="overflow-x-auto scrollbar-slim">
-          <table className="w-full text-[12.5px]">
+          <table className="w-full text-[12.5px]" style={{ minWidth: 720 }}>
             <thead>
               <tr className="text-left mono text-[10px] uppercase tracking-wider" style={{ color: "var(--subtle)" }}>
-                <th className="px-4 py-2.5 font-normal">Время</th>
-                <th className="px-4 py-2.5 font-normal">Домен</th>
-                <th className="px-4 py-2.5 font-normal">Модель</th>
-                <th className="px-4 py-2.5 font-normal text-right">In/Out</th>
-                <th className="px-4 py-2.5 font-normal text-right">Latency</th>
-                <th className="px-4 py-2.5 font-normal text-right">Cost</th>
-                <th className="px-4 py-2.5 font-normal">Status</th>
+                <th className="px-4 py-2.5 font-normal whitespace-nowrap" style={{ minWidth: 90 }}>Время</th>
+                <th className="px-4 py-2.5 font-normal whitespace-nowrap" style={{ minWidth: 100 }}>Домен</th>
+                <th className="px-4 py-2.5 font-normal whitespace-nowrap" style={{ minWidth: 120 }}>Модель</th>
+                <th className="px-4 py-2.5 font-normal text-right whitespace-nowrap" style={{ minWidth: 90 }}>In/Out</th>
+                <th className="px-4 py-2.5 font-normal text-right whitespace-nowrap" style={{ minWidth: 80 }}>Latency</th>
+                <th className="px-4 py-2.5 font-normal text-right whitespace-nowrap" style={{ minWidth: 90 }}>Cost</th>
+                <th className="px-4 py-2.5 font-normal whitespace-nowrap" style={{ minWidth: 70 }}>Status</th>
               </tr>
             </thead>
             <tbody>
@@ -153,19 +153,19 @@ export default async function UsagePage() {
                   className="border-t"
                   style={{ borderColor: "var(--border-2)" }}
                 >
-                  <td className="px-4 py-2 mono text-[11px]" style={{ color: "var(--muted)" }}>
+                  <td className="px-4 py-2 mono text-[11px] whitespace-nowrap" style={{ color: "var(--muted)" }}>
                     {new Date(r.createdAt).toLocaleTimeString("ru-RU")}
                   </td>
-                  <td className="px-4 py-2 mono">{r.domain}</td>
-                  <td className="px-4 py-2 mono text-[11px]" style={{ color: "var(--muted)" }}>
+                  <td className="px-4 py-2 mono whitespace-nowrap">{r.domain}</td>
+                  <td className="px-4 py-2 mono text-[11px] whitespace-nowrap" style={{ color: "var(--muted)" }}>
                     {r.model.split("/").pop()}
                   </td>
-                  <td className="px-4 py-2 text-right mono">{r.tokensIn}/{r.tokensOut}</td>
-                  <td className="px-4 py-2 text-right mono">{r.latencyMs}ms</td>
-                  <td className="px-4 py-2 text-right mono" style={{ color: "var(--content)" }}>
+                  <td className="px-4 py-2 text-right mono whitespace-nowrap">{r.tokensIn}/{r.tokensOut}</td>
+                  <td className="px-4 py-2 text-right mono whitespace-nowrap">{r.latencyMs}ms</td>
+                  <td className="px-4 py-2 text-right mono whitespace-nowrap" style={{ color: "var(--content)" }}>
                     ${r.costUsd.toFixed(6)}
                   </td>
-                  <td className="px-4 py-2">
+                  <td className="px-4 py-2 whitespace-nowrap">
                     <Chip tone={r.status === "ok" ? "success" : "danger"} mono>
                       {r.status}
                     </Chip>

@@ -60,9 +60,9 @@ export default async function DashboardPage() {
             >
               // dashboard · <span style={{ color: "var(--coral)" }}>week 4</span>
             </div>
-            <h1 className="text-[26px] md:text-[30px] font-bold tracking-tight leading-tight">
+            <h1 className="text-[22px] md:text-[30px] font-bold tracking-tight leading-tight break-words">
               С возвращением,{" "}
-              <span className="serif-italic text-[30px] md:text-[34px]" style={{ color: "var(--amber)" }}>
+              <span className="serif-italic text-[26px] md:text-[34px]" style={{ color: "var(--amber)" }}>
                 {user.displayName}
               </span>
               .
@@ -96,7 +96,7 @@ export default async function DashboardPage() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           <Card className="p-4">
             <div className="flex items-center justify-between mb-2">
               <div className="text-[10px] mono uppercase tracking-wider" style={{ color: "var(--subtle)" }}>
@@ -206,20 +206,20 @@ export default async function DashboardPage() {
             все вызовы →
           </Link>
         </div>
-        <Card className="divide-y" style={{ borderColor: "var(--border-2)" }}>
+        <Card className="divide-y overflow-x-auto scrollbar-slim" style={{ borderColor: "var(--border-2)" }}>
           {recent.map((r) => (
             <div
               key={r.id}
-              className="px-4 py-2.5 flex items-center gap-3 text-[12.5px]"
+              className="px-4 py-2.5 flex items-center gap-3 text-[12.5px] min-w-[520px]"
               style={{ borderColor: "var(--border-2)" }}
             >
               <Chip tone={r.model.includes("haiku") ? "violet" : "coral"} mono>
                 {r.model.split("/").pop()?.replace("claude-", "")}
               </Chip>
-              <span className="mono" style={{ color: "var(--muted)" }}>
+              <span className="mono truncate" style={{ color: "var(--muted)" }}>
                 {r.domain}
               </span>
-              <span className="ml-auto flex items-center gap-3 mono text-[11px]" style={{ color: "var(--subtle)" }}>
+              <span className="ml-auto flex items-center gap-3 mono text-[11px] shrink-0" style={{ color: "var(--subtle)" }}>
                 <span>
                   {r.tokensIn}↑ {r.tokensOut}↓
                 </span>

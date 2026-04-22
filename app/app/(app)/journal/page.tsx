@@ -59,7 +59,7 @@ export default function JournalPage() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Поиск по записям"
-              className="pl-8"
+              className="pl-8 text-[16px] md:text-[13px]"
               aria-label="Поиск по записям"
             />
           </div>
@@ -118,8 +118,8 @@ export default function JournalPage() {
 
 function EmptyState({ onCreate }: { onCreate: () => void }) {
   return (
-    <div className="card px-6 py-14 flex flex-col items-center text-center gap-4">
-      <p className="serif-italic text-[28px] md:text-[34px] leading-tight">
+    <div className="card px-4 md:px-6 py-10 md:py-14 flex flex-col items-center text-center gap-4">
+      <p className="serif-italic text-[22px] md:text-[34px] leading-tight">
         Пустой <em>дневник</em>
       </p>
       <p

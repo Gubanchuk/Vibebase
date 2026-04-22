@@ -34,8 +34,8 @@ export function GenerateLessonCTA({
   };
 
   return (
-    <Card className="p-6 card-glow glow-ring">
-      <div className="flex items-start gap-4">
+    <Card className="p-5 md:p-6 card-glow glow-ring">
+      <div className="flex flex-col sm:flex-row items-start sm:items-start gap-4">
         <div
           className="w-12 h-12 rounded-md flex items-center justify-center shrink-0"
           style={{

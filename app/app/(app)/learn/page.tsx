@@ -26,24 +26,24 @@ export default async function LearnIndexPage() {
     <>
       <TopBar breadcrumb={[{ label: "Учёба", active: true }]} />
 
-      <section className="px-4 md:px-6 py-6">
+      <section className="px-4 md:px-6 md:px-8 py-5 md:py-6">
         <div
           className="text-[11px] mono uppercase tracking-wider mb-2"
           style={{ color: "var(--subtle)" }}
         >
           // learn · <span style={{ color: "var(--coral)" }}>structured course</span>
         </div>
-        <h1 className="text-[26px] md:text-[30px] font-bold tracking-tight leading-tight mb-1">
+        <h1 className="text-[22px] md:text-[30px] font-bold tracking-tight leading-tight mb-1">
           Твой{" "}
           <span
-            className="serif-italic text-[28px] md:text-[32px]"
+            className="serif-italic text-[24px] md:text-[32px]"
             style={{ color: "var(--amber)" }}
           >
             курс
           </span>
         </h1>
         <p
-          className="text-sm mb-8 max-w-2xl"
+          className="text-sm mb-6 md:mb-8 max-w-2xl"
           style={{ color: "var(--muted)" }}
         >
           Темы собраны из autoresearch-vault, проранжированы по важности и популярности,
@@ -117,7 +117,7 @@ function DomainSection({
         </div>
 
         {topics.length > 0 && (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <Chip tone={accent === "coral" ? "coral" : "violet"} mono>
               {pct}% освоено
             </Chip>
@@ -182,7 +182,7 @@ function TopicCard({
     <Link href={`/learn/${domain}/${topic.slug}`}>
       <Card
         hover
-        className="p-4 h-full flex flex-col gap-2 relative transition"
+        className="p-3.5 md:p-4 h-full flex flex-col gap-2 relative transition"
         style={{
           borderColor:
             state === "mastered"

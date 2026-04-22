@@ -72,8 +72,8 @@ export default async function LessonPage({
             >
               // lesson · {skill.name}
             </div>
-            <h1 className="text-[28px] font-bold tracking-tight leading-tight">
-              <span className="serif-italic text-[30px]">
+            <h1 className="text-[22px] md:text-[28px] font-bold tracking-tight leading-tight break-words">
+              <span className="serif-italic text-[24px] md:text-[30px]">
                 {lesson.title.split(" ")[0]}
               </span>
               {lesson.title.includes(" ")
@@ -87,7 +87,7 @@ export default async function LessonPage({
           />
         </div>
 
-        <div className="prose-md">
+        <div className="prose-md break-words">
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             rehypePlugins={[rehypeSlug]}

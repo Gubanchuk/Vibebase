@@ -117,7 +117,7 @@ export function PlacementFlow({ compact = false, onDone }: Props) {
   // ── Render: idle ────────────────────────────────────────────────────────
   if (phase === "idle") {
     return (
-      <Card className={cn("flex flex-col gap-3", compact ? "p-5" : "p-6 md:p-8")}>
+      <Card className={cn("flex flex-col gap-3", compact ? "p-5" : "p-5 md:p-8")}>
         <h2
           className={cn(
             "font-semibold tracking-tight",
@@ -152,7 +152,7 @@ export function PlacementFlow({ compact = false, onDone }: Props) {
     const progress = (index + (picked !== null ? 1 : 0)) / total;
 
     return (
-      <Card className={cn("flex flex-col gap-5", compact ? "p-5" : "p-6 md:p-8")}>
+      <Card className={cn("flex flex-col gap-5", compact ? "p-5" : "p-5 md:p-8")}>
         {/* Progress bar */}
         <div className="flex items-center gap-3">
           <div
@@ -258,7 +258,7 @@ export function PlacementFlow({ compact = false, onDone }: Props) {
     return (
       <Card
         glow
-        className={cn("flex flex-col gap-4", compact ? "p-5" : "p-6 md:p-8")}
+        className={cn("flex flex-col gap-4", compact ? "p-5" : "p-5 md:p-8")}
       >
         <div className="flex items-center gap-2">
           <Chip tone="coral" className="mono">
@@ -279,7 +279,7 @@ export function PlacementFlow({ compact = false, onDone }: Props) {
           <h2
             className={cn(
               "gradient-text font-bold tracking-tight",
-              compact ? "text-[40px]" : "text-[56px] md:text-[72px]"
+              compact ? "text-[40px]" : "text-[40px] md:text-[72px]"
             )}
             style={{ lineHeight: 1 }}
           >

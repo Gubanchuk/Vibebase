@@ -47,7 +47,7 @@ export default async function LessonPage({
         ]}
       />
 
-      <article className="px-4 md:px-6 py-6 max-w-3xl mx-auto">
+      <article className="px-4 md:px-6 md:px-8 py-4 md:py-6 max-w-3xl mx-auto">
         <Link
           href="/learn"
           className="inline-flex items-center gap-1.5 text-[12px] transition mb-4"
@@ -79,10 +79,10 @@ export default async function LessonPage({
           ) : null}
         </div>
 
-        <h1 className="text-[28px] md:text-[32px] font-bold tracking-tight leading-tight mb-2">
+        <h1 className="text-[22px] md:text-[32px] font-bold tracking-tight leading-tight mb-2">
           {topic.title}
         </h1>
-        <p className="text-[14px] mb-6" style={{ color: "var(--muted)" }}>
+        <p className="text-[14px] mb-5 md:mb-6" style={{ color: "var(--muted)" }}>
           {topic.summary}
         </p>
 

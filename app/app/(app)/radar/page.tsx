@@ -32,10 +32,10 @@ export default function RadarPage() {
               // radar · last sync{" "}
               <span style={{ color: "var(--muted)" }}>2 hours ago</span>
             </div>
-            <h1 className="text-[26px] md:text-[30px] font-bold tracking-tight leading-tight">
+            <h1 className="text-[22px] md:text-[30px] font-bold tracking-tight leading-tight break-words">
               Свежие{" "}
               <span
-                className="serif-italic text-[30px] md:text-[34px] gradient-text"
+                className="serif-italic text-[26px] md:text-[34px] gradient-text"
               >
                 сигналы
               </span>{" "}

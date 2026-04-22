@@ -82,7 +82,7 @@ export default async function RadarDetailPage({
         </div>
 
         {/* Title */}
-        <h1 className="text-[28px] md:text-[32px] font-bold tracking-tight leading-tight mb-3">
+        <h1 className="text-[22px] md:text-[32px] font-bold tracking-tight leading-tight mb-3 break-words">
           {item.title}
         </h1>
 
@@ -120,7 +120,7 @@ export default async function RadarDetailPage({
         </div>
 
         {/* Full summary (Russian) */}
-        <div className="prose-md">
+        <div className="prose-md break-words">
           <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSlug]}>
             {item.summaryMd}
           </ReactMarkdown>

@@ -48,7 +48,7 @@ export function ModeCard({ meta, lastSessionLabel, variant = "compact" }: Props)
         glow={isHero}
         className={cn(
           "h-full flex flex-col transition",
-          isHero ? "p-6 md:p-8" : "p-4 md:p-5",
+          isHero ? "p-5 md:p-8" : "p-4 md:p-5",
           isHero && "glow-ring"
         )}
       >

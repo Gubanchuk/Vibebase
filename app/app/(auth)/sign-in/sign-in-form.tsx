@@ -46,8 +46,8 @@ export function SignInForm() {
           <div className="text-[17px] font-semibold tracking-tight">Прокачка</div>
         </div>
 
-        <h1 className="text-[26px] font-bold tracking-tight leading-tight mb-1">
-          <span className="serif-italic text-[28px]" style={{ color: "var(--amber)" }}>
+        <h1 className="text-[22px] md:text-[26px] font-bold tracking-tight leading-tight mb-1">
+          <span className="serif-italic text-[24px] md:text-[28px]" style={{ color: "var(--amber)" }}>
             Добро
           </span>{" "}
           пожаловать
@@ -66,13 +66,14 @@ export function SignInForm() {
             </span>
             <Input
               type="email"
+              inputMode="email"
               value={email}
               required
               autoComplete="email"
               autoFocus
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
-              className="mt-1"
+              className="mt-1 text-[16px] md:text-[13px]"
             />
           </label>
 
@@ -90,7 +91,7 @@ export function SignInForm() {
               autoComplete="current-password"
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="mt-1"
+              className="mt-1 text-[16px] md:text-[13px]"
             />
           </label>
 

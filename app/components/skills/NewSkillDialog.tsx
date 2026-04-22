@@ -145,6 +145,7 @@ export function NewSkillDialog({
                 placeholder="Напр.: Public Speaking, SQL, Дзюдо"
                 disabled={phase === "generating"}
                 autoFocus
+                className="text-[16px] md:text-[13px]"
               />
             </Field>
 
@@ -158,11 +159,12 @@ export function NewSkillDialog({
                 placeholder="Напр.: Уверенно питчить идеи 5 минут без бумажки. Не заикаться, держать взгляд зала, управлять темпом."
                 rows={4}
                 disabled={phase === "generating"}
+                className="text-[16px] md:text-[13px]"
               />
             </Field>
 
             <Field label="Текущий уровень" hint="помогает подстроить глубину">
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                 {LEVELS.map((l) => (
                   <button
                     key={l.id}
@@ -170,7 +172,7 @@ export function NewSkillDialog({
                     onClick={() => setLevel(l.id)}
                     disabled={phase === "generating"}
                     className={cn(
-                      "card p-3 text-left transition",
+                      "card p-3 text-left transition min-h-[44px]",
                       level === l.id
                         ? "card-glow glow-ring"
                         : "card-hover"

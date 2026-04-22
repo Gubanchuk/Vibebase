@@ -16,8 +16,8 @@ export default function EnglishHomePage() {
     <>
       <TopBar breadcrumb={[{ label: "Английский", active: true }]} />
 
-      <div className="px-4 md:px-8 py-6 md:py-8 max-w-6xl mx-auto">
-        <header className="mb-6 md:mb-8 flex items-end justify-between gap-4 flex-wrap">
+      <div className="px-4 md:px-8 py-5 md:py-8 max-w-6xl mx-auto">
+        <header className="mb-5 md:mb-8 flex items-end justify-between gap-4 flex-wrap">
           <div>
             <div
               className="text-[11px] mono uppercase tracking-wider mb-1"
@@ -25,7 +25,7 @@ export default function EnglishHomePage() {
             >
               Домен
             </div>
-            <h1 className="text-[28px] md:text-[32px] font-bold tracking-tight">
+            <h1 className="text-[22px] md:text-[32px] font-bold tracking-tight">
               Английский <span className="serif-italic gradient-text">ежедневно</span>
             </h1>
             <p

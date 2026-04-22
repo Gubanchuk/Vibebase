@@ -23,7 +23,7 @@ export default function OnboardingPage() {
         <StepDots active={step} />
       </header>
 
-      <main className="flex-1 px-4 md:px-8 pb-10 flex items-start justify-center">
+      <main className="flex-1 px-4 md:px-8 pb-[max(2.5rem,env(safe-area-inset-bottom))] flex items-start justify-center">
         <div className="w-full max-w-2xl">
           {step === 0 ? <IntroStep onNext={() => setStep(1)} /> : null}
           {step === 1 ? (
@@ -74,13 +74,13 @@ function StepDots({ active }: { active: Step }) {
 
 function IntroStep({ onNext }: { onNext: () => void }) {
   return (
-    <Card className="p-6 md:p-10 flex flex-col gap-5">
+    <Card className="p-5 md:p-10 flex flex-col gap-5">
       <Chip tone="coral" className="mono self-start">
         <Sparkles size={11} strokeWidth={2} />
         шаг 1 из 3
       </Chip>
 
-      <h1 className="text-[30px] md:text-[38px] font-bold tracking-tight leading-tight">
+      <h1 className="text-[24px] md:text-[38px] font-bold tracking-tight leading-tight break-words">
         Собираем твой персональный{" "}
         <span className="serif-italic gradient-text">английский</span>
       </h1>
@@ -124,13 +124,13 @@ function PlacementStep({ onDone }: { onDone: (r: PlacementResult) => void }) {
 
 function ResultStep({ result }: { result: PlacementResult }) {
   return (
-    <Card glow className="p-6 md:p-10 flex flex-col gap-5">
+    <Card glow className="p-5 md:p-10 flex flex-col gap-5">
       <Chip tone="coral" className="mono self-start">
         <Sparkles size={11} strokeWidth={2} />
         шаг 3 из 3 · готово
       </Chip>
 
-      <h1 className="text-[26px] md:text-[32px] font-bold tracking-tight leading-tight">
+      <h1 className="text-[22px] md:text-[32px] font-bold tracking-tight leading-tight break-words">
         Ты говоришь на{" "}
         <span className="gradient-text">{result.level}</span>. Создал твой
         первый навык{" "}

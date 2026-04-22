@@ -27,7 +27,7 @@ export function ChatHeader({ current, level, modes }: Props) {
   const currentMeta = modes.find((m) => m.id === current);
   return (
     <div
-      className="px-4 md:px-8 py-2.5 flex items-center gap-2 border-b"
+      className="px-4 md:px-8 py-2 md:py-2.5 flex items-center gap-2 border-b flex-wrap"
       style={{ borderColor: "var(--border-2)" }}
     >
       <Popover>

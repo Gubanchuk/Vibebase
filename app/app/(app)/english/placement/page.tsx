@@ -12,15 +12,15 @@ export default function PlacementPage() {
           { label: "Placement", active: true },
         ]}
       />
-      <div className="px-4 md:px-8 py-8 md:py-12 max-w-2xl mx-auto">
-        <header className="mb-6">
+      <div className="px-4 md:px-8 py-6 md:py-12 max-w-2xl mx-auto">
+        <header className="mb-5 md:mb-6">
           <div
             className="text-[11px] mono uppercase tracking-wider mb-1"
             style={{ color: "var(--subtle)" }}
           >
             Тест уровня
           </div>
-          <h1 className="text-[26px] md:text-[30px] font-bold tracking-tight">
+          <h1 className="text-[22px] md:text-[30px] font-bold tracking-tight">
             Определим твой <span className="serif-italic gradient-text">уровень</span>
           </h1>
           <p
