@@ -118,10 +118,15 @@ export async function commitSkillAction(input: {
       nodes: input.roadmap.nodes.map((n) => ({
         title: n.title,
         description: n.description,
-        children: n.children?.map((c) => ({
-          title: c.title,
-          description: c.description,
-        })),
+        // roadmap-schema returns null для «нет детей», createSkillWithTree
+        // ожидает optional array — мапим null→undefined.
+        children:
+          n.children && n.children.length > 0
+            ? n.children.map((c) => ({
+                title: c.title,
+                description: c.description,
+              }))
+            : undefined,
       })),
     });
     revalidatePath("/skills");

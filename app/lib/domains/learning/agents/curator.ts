@@ -55,10 +55,13 @@ const CuratedTopicSchema = z.object({
     .describe(
       "Имена файлов из vault, которые фидят эту тему. Используй только те, что я передал во входе."
     ),
+  // OpenAI strict structured output: все поля required, никаких .default().
+  // Модель возвращает [] если prerequisites нет.
   prerequisites: z
     .array(z.string())
-    .describe("Slug'и других тем из ЭТОГО же выхода, которые надо знать первыми")
-    .default([]),
+    .describe(
+      "Slug'и других тем из ЭТОГО же выхода, которые надо знать первыми. Пустой массив если это базовая тема без пререквизитов."
+    ),
 });
 
 const CuratorOutputSchema = z.object({
