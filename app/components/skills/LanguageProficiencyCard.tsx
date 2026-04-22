@@ -153,9 +153,11 @@ export function LanguageProficiencyCard({
         </div>
       </div>
 
-      {/* Step ladder — горизонтальный прогресс по всем уровням шкалы */}
-      <div className="mb-3">
-        <div className="flex items-center gap-1 flex-wrap">
+      {/* Step ladder — горизонтальный прогресс по всем уровням шкалы.
+          На мобиле: компактные pill'ы + flex-nowrap + overflow-x fallback,
+          чтобы ряд не переносился посередине шкалы. */}
+      <div className="mb-3 -mx-1 px-1 overflow-x-auto scrollbar-slim">
+        <div className="flex items-center gap-0.5 sm:gap-1 flex-nowrap min-w-max">
           {levelScale.map((lv, i) => {
             const isCurrent = i === currentOrd;
             const isPassed = i < currentOrd;
@@ -301,7 +303,8 @@ function StepPill({
   return (
     <span
       className={cn(
-        "inline-flex items-center justify-center px-1.5 h-6 min-w-[32px] rounded mono text-[10.5px] border transition"
+        "inline-flex items-center justify-center h-6 rounded mono border transition shrink-0",
+        "px-1 sm:px-1.5 min-w-[26px] sm:min-w-[32px] text-[10px] sm:text-[10.5px]"
       )}
       style={style}
       title={

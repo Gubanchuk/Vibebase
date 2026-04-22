@@ -341,7 +341,7 @@ export default async function DashboardPage() {
         >
           <Card
             hover
-            className="divide-y overflow-x-auto scrollbar-slim"
+            className="divide-y"
             style={{ borderColor: "var(--border-2)" }}
           >
             {recent.length === 0 ? (
@@ -355,23 +355,25 @@ export default async function DashboardPage() {
               recent.map((r) => (
                 <div
                   key={r.id}
-                  className="px-4 py-2.5 flex items-center gap-3 text-[12.5px] min-w-[520px]"
+                  className="px-3 sm:px-4 py-2.5 flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3 text-[12.5px]"
                   style={{ borderColor: "var(--border-2)" }}
                 >
-                  <Chip
-                    tone={r.model.includes("haiku") ? "violet" : "coral"}
-                    mono
-                  >
-                    {r.model.split("/").pop()?.replace("claude-", "")}
-                  </Chip>
+                  <div className="flex items-center gap-2 min-w-0">
+                    <Chip
+                      tone={r.model.includes("haiku") ? "violet" : "coral"}
+                      mono
+                    >
+                      {r.model.split("/").pop()?.replace("claude-", "")}
+                    </Chip>
+                    <span
+                      className="mono truncate"
+                      style={{ color: "var(--muted)" }}
+                    >
+                      {r.domain}
+                    </span>
+                  </div>
                   <span
-                    className="mono truncate"
-                    style={{ color: "var(--muted)" }}
-                  >
-                    {r.domain}
-                  </span>
-                  <span
-                    className="ml-auto flex items-center gap-3 mono text-[11px] shrink-0"
+                    className="sm:ml-auto flex items-center gap-2 sm:gap-3 mono text-[11px] shrink-0 flex-wrap"
                     style={{ color: "var(--subtle)" }}
                   >
                     <span>

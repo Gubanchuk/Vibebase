@@ -38,6 +38,10 @@ export const DialogContent = React.forwardRef<
       <DialogPrimitive.Close
         aria-label="Close"
         className="absolute right-2 top-2 rounded p-2 min-w-11 min-h-11 flex items-center justify-center text-[color:var(--muted)] hover:text-[color:var(--content)] hover:bg-[color:var(--surface-2)]"
+        style={{
+          marginTop: "env(safe-area-inset-top, 0px)",
+          marginRight: "env(safe-area-inset-right, 0px)",
+        }}
       >
         <X size={16} />
         <span className="sr-only">Close</span>

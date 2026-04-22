@@ -139,7 +139,16 @@ export function TopicCard({
         />
       </div>
 
-      <h3 className="text-[14.5px] font-semibold leading-snug pl-1 pointer-events-none relative z-[1]">
+      <h3
+        className="text-[13.5px] sm:text-[14.5px] font-semibold leading-snug pl-1 pointer-events-none relative z-[1]"
+        style={{
+          display: "-webkit-box",
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: "vertical",
+          overflow: "hidden",
+          overflowWrap: "anywhere",
+        }}
+      >
         {topic.title}
       </h3>
       <p
@@ -147,7 +156,7 @@ export function TopicCard({
         style={{
           color: "var(--muted)",
           display: "-webkit-box",
-          WebkitLineClamp: 3,
+          WebkitLineClamp: 2,
           WebkitBoxOrient: "vertical",
           overflow: "hidden",
         }}
@@ -156,10 +165,11 @@ export function TopicCard({
       </p>
 
       <div className="flex items-center gap-1.5 flex-wrap pl-1 pt-1 relative z-[1] pointer-events-none">
+        {/* Теги прячем на <sm чтобы не забивать карточку на мобиле */}
         {topic.tags.slice(0, 3).map((tag) => (
           <span
             key={tag}
-            className="chip mono text-[9.5px]"
+            className="hidden sm:inline-flex chip mono text-[9.5px]"
             style={{ padding: "1px 6px" }}
           >
             {tag}
@@ -167,7 +177,7 @@ export function TopicCard({
         ))}
         {topic.levelMin ? (
           <span
-            className="chip chip-violet mono text-[9.5px]"
+            className="chip chip-violet mono text-[10px] sm:text-[9.5px]"
             style={{ padding: "1px 6px" }}
           >
             {topic.levelMin}
@@ -178,7 +188,7 @@ export function TopicCard({
         ) : null}
         {topic.popularity > 0 ? (
           <span
-            className="chip mono text-[9.5px] inline-flex items-center gap-0.5"
+            className="chip mono text-[10px] sm:text-[9.5px] inline-flex items-center gap-0.5"
             style={{ padding: "1px 6px", color: "var(--amber)" }}
             title={`${topic.popularity} упоминаний в ресёрче`}
           >

@@ -530,6 +530,8 @@ body {
 /* ─── Mobile safe-area & viewport utilities ─── */
 .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
 .pt-safe { padding-top: env(safe-area-inset-top); }
+.pr-safe { padding-right: env(safe-area-inset-right); }
+.pl-safe { padding-left: env(safe-area-inset-left); }
 
 /* iOS Safari zoom prevention — apply to all text inputs */
 @media (max-width: 640px) {
@@ -540,8 +542,30 @@ body {
   .chat-md code, .prose-md code { font-size: 0.86em; }
 }
 
-/* Better tap-target indicators on touch devices */
+/* Touch device: ensure Apple HIG 44×44 min tap targets on primary controls.
+   Use pointer: coarse so mouse/pen users on narrow desktop don't get huge buttons. */
 @media (hover: none) and (pointer: coarse) {
   .nav-item:active { background: var(--surface-3); }
   .btn:active { transform: scale(0.97); }
+
+  .btn,
+  .btn-sm,
+  .btn-lg {
+    min-height: 44px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .btn-sm {
+    /* Keep smaller horizontal padding but raise hit-zone */
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  /* Chip buttons still compact, but raise interactive chips */
+  button.chip,
+  a.chip {
+    min-height: 32px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
 }

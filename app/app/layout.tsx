@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono, Instrument_Serif } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
@@ -29,6 +29,20 @@ export const metadata: Metadata = {
   title: "Прокачка — Personal Skills Platform",
   description:
     "AI English tutor · skill roadmaps · vibecoding radar · journal. Personal growth OS.",
+};
+
+/**
+ * Viewport: включает safe-area через viewport-fit=cover и отключает авто-zoom
+ * на iOS (maximum-scale=1, user-scalable=no). Без этого iOS Safari при любом
+ * input < 16px устраивает ZOOM в пол-экрана.
+ */
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover",
+  themeColor: "#0a0a0a",
 };
 
 export default function RootLayout({

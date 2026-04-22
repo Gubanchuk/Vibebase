@@ -21,22 +21,40 @@ export function TopBar({
         borderColor: "var(--border-2)",
       }}
     >
-      {/* flex-1 min-w-0 lets the breadcrumb row actually shrink; without min-w-0 long labels push the row wider than the viewport */}
+      {/* flex-1 min-w-0 lets the breadcrumb row actually shrink; without min-w-0 long labels push the row wider than the viewport.
+          На мобиле промежуточные сегменты прячем — оставляем только текущий (active), чтобы узкий топ-бар не резал буквы. */}
       <div
         className="flex-1 min-w-0 flex items-center gap-1.5 text-[12px] overflow-hidden"
         style={{ color: "var(--muted)" }}
       >
-        {breadcrumb.map((b, i) => (
-          <span key={i} className="flex items-center gap-1.5 min-w-0">
-            {i > 0 ? <span className="shrink-0" style={{ color: "var(--subtle)" }}>/</span> : null}
+        {breadcrumb.map((b, i) => {
+          const isLast = i === breadcrumb.length - 1;
+          return (
             <span
-              className="truncate"
-              style={{ color: b.active ? "var(--content)" : undefined }}
+              key={i}
+              className={
+                isLast
+                  ? "flex items-center gap-1.5 min-w-0"
+                  : "hidden sm:flex items-center gap-1.5 min-w-0"
+              }
             >
-              {b.label}
+              {i > 0 ? (
+                <span
+                  className="shrink-0 hidden sm:inline"
+                  style={{ color: "var(--subtle)" }}
+                >
+                  /
+                </span>
+              ) : null}
+              <span
+                className="truncate"
+                style={{ color: b.active ? "var(--content)" : undefined }}
+              >
+                {b.label}
+              </span>
             </span>
-          </span>
-        ))}
+          );
+        })}
       </div>
       <div className="flex items-center gap-2 shrink-0">
         {streaming ? (

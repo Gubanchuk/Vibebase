@@ -187,16 +187,14 @@ export function VibecodingChatSurface({
   const hasMessages = messages.length > 0 || isStreaming;
 
   return (
-    <div
-      className="flex flex-col h-[calc(100dvh-120px)]"
-      style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
-    >
+    <div className="flex flex-col min-h-[calc(100dvh-60px)]">
       <div
         ref={scrollRef}
         onScroll={handleScroll}
-        className="flex-1 overflow-y-auto scrollbar-slim px-4 md:px-8 py-6 relative"
+        className="flex-1 overflow-y-auto scrollbar-slim px-4 md:px-8 py-6 relative min-h-0"
         role="log"
         aria-live="polite"
+        style={{ paddingBottom: "144px" }}
       >
         {!hasMessages ? (
           <EmptyState mode={mode} onPick={(p) => void send(p)} />
@@ -231,8 +229,12 @@ export function VibecodingChatSurface({
       ) : null}
 
       <div
-        className="border-t px-3 md:px-6 py-3 flex gap-2 items-end"
-        style={{ borderColor: "var(--border-2)", background: "var(--bg)" }}
+        className="sticky bottom-0 z-30 border-t px-3 md:px-6 py-3 flex gap-2 items-end"
+        style={{
+          borderColor: "var(--border-2)",
+          background: "var(--bg)",
+          paddingBottom: "calc(12px + env(safe-area-inset-bottom, 0px))",
+        }}
       >
         <textarea
           ref={textareaRef}

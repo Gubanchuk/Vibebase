@@ -377,7 +377,7 @@ function EditorPane({
       onChange={(e) => onChange(e.target.value)}
       spellCheck
       placeholder="Напиши что-нибудь. Markdown поддерживается."
-      className="w-full min-h-[60dvh] bg-transparent outline-none resize-none border-0 p-0 text-[16px] md:text-[14px] leading-[1.7] placeholder:text-[color:var(--subtle)]"
+      className="w-full min-h-[40dvh] sm:min-h-[60dvh] bg-transparent outline-none resize-none border-0 p-0 text-[16px] md:text-[14px] leading-[1.7] placeholder:text-[color:var(--subtle)]"
       style={{ color: "var(--content)" }}
     />
   );

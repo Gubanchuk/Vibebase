@@ -25,7 +25,9 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
           streakDays={streak.current}
           streakActiveToday={streak.activeToday}
         />
-        <main className="flex-1 min-w-0 pb-20 md:pb-0 scrollbar-slim">{children}</main>
+        <main className="flex-1 min-w-0 scrollbar-slim pb-[calc(5rem+env(safe-area-inset-bottom,0px))] md:pb-0">
+          {children}
+        </main>
       </div>
       <BottomTabs />
     </CommandPaletteProvider>
