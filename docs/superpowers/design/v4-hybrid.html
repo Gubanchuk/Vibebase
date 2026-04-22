@@ -1,0 +1,838 @@
+<!doctype html>
+<html lang="ru" class="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Прокачка — V4 hybrid</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Base — V1 dense dark */
+    --bg: #0a0a0a;
+    --bg-tinted: #0b0a0c;
+    --surface: #111111;
+    --surface-2: #161616;
+    --surface-3: #1a1a1a;
+    --border: #262626;
+    --border-2: #1f1f1f;
+    --border-hover: #333333;
+    --content: #ededed;
+    --muted: #a1a1aa;
+    --subtle: #71717a;
+
+    /* V3 accent language */
+    --coral: #f97066;
+    --coral-soft: rgba(249, 112, 102, 0.14);
+    --amber: #fbbf24;
+    --violet: #a855f7;
+    --violet-soft: rgba(168, 85, 247, 0.14);
+    --success: #4ade80;
+    --warn: #fbbf24;
+    --danger: #ef4444;
+
+    --gradient-hot: linear-gradient(135deg, #f97066 0%, #fbbf24 100%);
+    --gradient-cool: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+  }
+  html, body { background: var(--bg); color: var(--content); font-family: 'Inter', system-ui, sans-serif; letter-spacing: -0.005em; }
+  body {
+    background-image:
+      radial-gradient(circle at 18% 5%, rgba(249, 112, 102, 0.06), transparent 40%),
+      radial-gradient(circle at 85% 95%, rgba(168, 85, 247, 0.05), transparent 40%);
+    background-attachment: fixed;
+  }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .serif-italic { font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; letter-spacing: -0.018em; }
+
+  /* V1 dense cards with V3 hover glow */
+  .card { background: var(--surface); border: 1px solid var(--border-2); border-radius: 8px; transition: all 0.15s; }
+  .card-hover:hover { background: var(--surface-2); border-color: var(--border); }
+  .card-glow { box-shadow: 0 0 32px -16px rgba(249, 112, 102, 0.45); }
+
+  /* Chips — V1 compact sizing with V3 palette */
+  .chip { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 500; border: 1px solid var(--border); background: var(--surface-2); color: var(--muted); }
+  .chip-coral { background: var(--coral-soft); border-color: rgba(249, 112, 102, 0.3); color: var(--coral); }
+  .chip-violet { background: var(--violet-soft); border-color: rgba(168, 85, 247, 0.3); color: #c084fc; }
+  .chip-amber { background: rgba(251, 191, 36, 0.12); border-color: rgba(251, 191, 36, 0.3); color: var(--amber); }
+  .chip-success { background: rgba(74, 222, 128, 0.12); border-color: rgba(74, 222, 128, 0.3); color: var(--success); }
+
+  /* Buttons */
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.12s; }
+  .btn-primary { background: var(--gradient-hot); color: white; box-shadow: 0 2px 12px -4px rgba(249, 112, 102, 0.5); }
+  .btn-primary:hover { filter: brightness(1.08); box-shadow: 0 4px 16px -4px rgba(249, 112, 102, 0.6); }
+  .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+  .btn-ghost:hover { background: var(--surface-2); color: var(--content); border-color: var(--border-hover); }
+
+  /* Sidebar nav */
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 6px; color: var(--muted); font-size: 13px; font-weight: 500; position: relative; transition: all 0.12s; }
+  .nav-item:hover { background: var(--surface-2); color: var(--content); }
+  .nav-item.active { background: var(--surface-2); color: var(--content); }
+  .nav-item.active::before { content: ''; position: absolute; left: 3px; top: 50%; transform: translateY(-50%); width: 3px; height: 18px; background: var(--gradient-hot); border-radius: 999px; box-shadow: 0 0 8px rgba(249, 112, 102, 0.5); }
+
+  /* Grid background */
+  .grid-pattern {
+    background-image:
+      linear-gradient(to right, var(--border-2) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--border-2) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  /* Progress */
+  .dot-progress { display: inline-flex; gap: 3px; }
+  .dot-progress span { width: 6px; height: 6px; border-radius: 50%; background: var(--border); }
+  .dot-progress span.on { background: var(--coral); box-shadow: 0 0 6px rgba(249, 112, 102, 0.55); }
+
+  /* Mono kbd */
+  .kbd { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 1px 5px; border: 1px solid var(--border); background: var(--surface-2); border-radius: 3px; color: var(--muted); }
+
+  /* Streaming dot V3 */
+  .stream-dot { width: 7px; height: 7px; background: var(--coral); border-radius: 50%; display: inline-block; box-shadow: 0 0 8px var(--coral); animation: pulse 1.4s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.85); } }
+
+  /* Chat bubbles — V1 compact but V3 palette */
+  .chat-bubble { padding: 10px 14px; border-radius: 10px; font-size: 13px; line-height: 1.6; }
+  .chat-bubble-user { background: var(--gradient-hot); color: white; border-bottom-right-radius: 4px; }
+  .chat-bubble-assistant { background: var(--surface-2); border: 1px solid var(--border-2); border-bottom-left-radius: 4px; }
+
+  /* Gradient text */
+  .gradient-text { background: var(--gradient-hot); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .gradient-text-cool { background: var(--gradient-cool); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+
+  /* Glow ring for active node */
+  .glow-ring { position: relative; }
+  .glow-ring::before {
+    content: '';
+    position: absolute; inset: -1px;
+    padding: 1px;
+    border-radius: inherit;
+    background: var(--gradient-hot);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* Tree lines V1 */
+  .tree-line { position: absolute; left: 10px; top: 24px; bottom: 0; width: 1px; background: var(--border); }
+  .tree-child { position: relative; padding-left: 24px; }
+  .tree-child::before { content: ''; position: absolute; left: 10px; top: 14px; width: 12px; height: 1px; background: var(--border); }
+
+  /* Underlines for mistake/correction */
+  .underline-fix { text-decoration: underline; text-decoration-style: wavy; text-decoration-color: rgba(249, 112, 102, 0.55); text-underline-offset: 3px; }
+  .underline-ok { background: linear-gradient(transparent 65%, rgba(74, 222, 128, 0.32) 65%); padding: 0 2px; border-radius: 2px; }
+
+  /* Dividers */
+  .section-divider { border-top: 1px solid var(--border-2); }
+  ::selection { background: var(--coral-soft); }
+  .scrollbar-slim::-webkit-scrollbar { width: 6px; height: 6px; }
+  .scrollbar-slim::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body class="min-h-screen">
+
+<div class="flex min-h-screen">
+  <!-- SIDEBAR — V1 density -->
+  <aside class="w-60 border-r flex flex-col" style="background: var(--surface); border-color: var(--border-2);">
+    <div class="px-4 py-4 flex items-center gap-2 border-b" style="border-color: var(--border-2);">
+      <div class="w-7 h-7 rounded-md flex items-center justify-center" style="background: var(--gradient-hot); box-shadow: 0 2px 10px -2px rgba(249, 112, 102, 0.55);">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="m13 2-3 14h7l-4 6"/></svg>
+      </div>
+      <div class="leading-tight">
+        <div class="text-[13px] font-semibold">Прокачка</div>
+        <div class="text-[10px] mono" style="color: var(--subtle);">v0.1.0 · <span style="color: var(--coral);">alpha</span></div>
+      </div>
+      <div class="ml-auto kbd">⌘K</div>
+    </div>
+
+    <nav class="flex-1 p-2 space-y-0.5">
+      <div class="px-2 pt-2 pb-1 text-[10px] mono uppercase tracking-wider" style="color: var(--subtle);">Навигация</div>
+      <a href="#dashboard" class="nav-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Дашборд
+      </a>
+      <a href="#english" class="nav-item active">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Английский
+        <span class="ml-auto chip chip-coral">B1</span>
+      </a>
+      <a href="#skills" class="nav-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L4.5 8L12 14L19.5 8L12 2Z"/><path d="M4 14l8 5 8-5M4 19l8 5 8-5"/></svg>
+        Прокачка навыков
+      </a>
+      <a href="#radar" class="nav-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        Радар
+        <span class="ml-auto chip chip-success mono">+14</span>
+      </a>
+      <a href="#journal" class="nav-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        Дневник
+      </a>
+
+      <div class="px-2 pt-4 pb-1 text-[10px] mono uppercase tracking-wider" style="color: var(--subtle);">Система</div>
+      <a href="#usage" class="nav-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3v18h18"/><path d="m7 17 4-4 4 4 6-6"/></svg>
+        Использование
+        <span class="ml-auto mono text-[10px]" style="color: var(--muted);">$3.47</span>
+      </a>
+      <a href="#" class="nav-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Настройки
+      </a>
+    </nav>
+
+    <div class="border-t p-3" style="border-color: var(--border-2);">
+      <div class="card p-2.5 flex items-center gap-2.5">
+        <div class="w-7 h-7 rounded flex items-center justify-center text-[11px] font-semibold" style="background: var(--gradient-hot); color: white;">АГ</div>
+        <div class="flex-1 min-w-0">
+          <div class="text-[12px] font-medium truncate">An.guban79</div>
+          <div class="text-[10px] mono flex items-center gap-1" style="color: var(--coral);">🔥 streak · 7 дней</div>
+        </div>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color: var(--subtle);"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="flex-1 overflow-y-auto scrollbar-slim">
+    <!-- TOP BAR -->
+    <header class="sticky top-0 z-10 px-6 py-3 flex items-center gap-3 border-b" style="background: rgba(10,10,10,0.82); backdrop-filter: blur(14px); border-color: var(--border-2);">
+      <div class="flex items-center gap-1.5 text-[12px]" style="color: var(--muted);">
+        <span>Английский</span>
+        <span style="color: var(--subtle);">/</span>
+        <span style="color: var(--content);">Персональный урок</span>
+      </div>
+      <div class="ml-auto flex items-center gap-2">
+        <div class="chip chip-coral mono">
+          <span class="stream-dot"></span>
+          sonnet-4-6 · streaming
+        </div>
+        <button class="btn btn-ghost">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          Поиск
+          <span class="kbd">⌘K</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- DASHBOARD HERO -->
+    <section id="dashboard" class="p-6 border-b" style="border-color: var(--border-2);">
+      <div class="flex items-start justify-between mb-5">
+        <div>
+          <div class="text-[11px] mono uppercase tracking-wider mb-2" style="color: var(--subtle);">// dashboard · <span style="color: var(--coral);">week 4</span></div>
+          <h1 class="text-[28px] font-bold tracking-tight mb-1 leading-tight">
+            С возвращением, <span class="serif-italic text-[30px]" style="color: var(--amber);">Андрей</span>.
+          </h1>
+          <p class="text-sm" style="color: var(--muted);">
+            Закрыл <span style="color: var(--content);" class="font-semibold">5 уроков</span> · Present Perfect уже интуитивный. Дальше <span class="gradient-text font-semibold">Past Perfect</span>.
+          </p>
+        </div>
+        <button class="btn btn-primary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20"/></svg>
+          Продолжить урок
+        </button>
+      </div>
+
+      <div class="grid grid-cols-4 gap-3">
+        <div class="card p-4">
+          <div class="flex items-center justify-between mb-2">
+            <div class="text-[10px] mono uppercase tracking-wider" style="color: var(--subtle);">Английский</div>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color: var(--coral);"><path d="M7 17l10-10M7 7h10v10"/></svg>
+          </div>
+          <div class="text-xl font-bold mono gradient-text">B1→B1+</div>
+          <div class="text-[11px] mt-1.5" style="color: var(--muted);">128 сообщений · 42 правки</div>
+        </div>
+        <div class="card p-4">
+          <div class="flex items-center justify-between mb-2">
+            <div class="text-[10px] mono uppercase tracking-wider" style="color: var(--subtle);">Навыки</div>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color: var(--violet);"><path d="M12 2L4.5 8L12 14L19.5 8L12 2Z"/></svg>
+          </div>
+          <div class="text-xl font-bold">3 <span class="serif-italic text-lg" style="color: var(--muted);">активных</span></div>
+          <div class="flex items-center gap-1.5 mt-1.5 text-[11px]" style="color: var(--muted);">
+            <span class="dot-progress"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></span>
+            62% прогресс
+          </div>
+        </div>
+        <div class="card p-4">
+          <div class="flex items-center justify-between mb-2">
+            <div class="text-[10px] mono uppercase tracking-wider" style="color: var(--subtle);">Радар</div>
+            <span class="chip chip-success mono">+14</span>
+          </div>
+          <div class="text-xl font-bold mono">14 новых</div>
+          <div class="text-[11px] mt-1.5" style="color: var(--success);">3 strong · MCP + agents</div>
+        </div>
+        <div class="card p-4">
+          <div class="flex items-center justify-between mb-2">
+            <div class="text-[10px] mono uppercase tracking-wider" style="color: var(--subtle);">Burn</div>
+            <span class="chip mono">/ $50</span>
+          </div>
+          <div class="text-xl font-bold mono">$3.47</div>
+          <div class="w-full h-1 rounded-full mt-2" style="background: var(--border-2);">
+            <div class="h-full rounded-full" style="width: 7%; background: var(--gradient-hot);"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ENGLISH SECTION -->
+    <section id="english" class="p-6 border-b" style="border-color: var(--border-2);">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="text-[11px] mono uppercase tracking-wider" style="color: var(--subtle);">// english-tutor</div>
+        <div class="flex-1 section-divider"></div>
+        <a href="#" class="text-[12px] flex items-center gap-1" style="color: var(--muted);">
+          История <span class="kbd">H</span>
+        </a>
+      </div>
+
+      <h2 class="text-[22px] font-bold mb-0.5 leading-tight">Шесть режимов. <span class="serif-italic text-[24px]" style="color: var(--coral);">Один</span> учитель.</h2>
+      <p class="text-sm mb-4" style="color: var(--muted);">Подстроится под <span class="chip chip-coral">B1</span> через <span class="mono" style="color: var(--coral);">claude-sonnet-4-6</span> в AI Gateway</p>
+
+      <div class="grid grid-cols-3 gap-3 mb-6">
+        <div class="card card-hover p-4 cursor-pointer relative">
+          <div class="flex items-start justify-between mb-3">
+            <div class="text-2xl">💬</div>
+            <span class="kbd">1</span>
+          </div>
+          <div class="text-[13px] font-bold mb-0.5">Разговор с носителем</div>
+          <div class="text-[11px]" style="color: var(--muted);">Болтаем по теме, мгновенные правки</div>
+          <div class="text-[10px] mono mt-3 flex items-center gap-1" style="color: var(--subtle);">
+            <span>24 сессии</span><span>·</span><span>2ч назад</span>
+          </div>
+        </div>
+
+        <div class="card card-hover p-4 cursor-pointer relative card-glow" style="border-color: rgba(249, 112, 102, 0.4);">
+          <div class="absolute -top-2 -right-2 chip chip-coral mono" style="box-shadow: 0 4px 12px -2px rgba(249, 112, 102, 0.5);">● LIVE</div>
+          <div class="flex items-start justify-between mb-3">
+            <div class="text-2xl">📖</div>
+            <span class="kbd">2</span>
+          </div>
+          <div class="text-[13px] font-bold mb-0.5">Персональный урок</div>
+          <div class="text-[11px]" style="color: var(--muted);">30 мин · grammar + listening + quiz</div>
+          <div class="text-[10px] mono mt-3 flex items-center gap-1" style="color: var(--coral);">
+            <span class="stream-dot"></span>
+            активная сессия
+          </div>
+        </div>
+
+        <div class="card card-hover p-4 cursor-pointer relative">
+          <div class="flex items-start justify-between mb-3">
+            <div class="text-2xl">🔀</div>
+            <span class="kbd">3</span>
+          </div>
+          <div class="text-[13px] font-bold mb-0.5">Перевод с логикой</div>
+          <div class="text-[11px]" style="color: var(--muted);">Почему это слово, альтернативы</div>
+          <div class="text-[10px] mono mt-3" style="color: var(--subtle);">12 сессий · вчера</div>
+        </div>
+
+        <div class="card card-hover p-4 cursor-pointer relative">
+          <div class="flex items-start justify-between mb-3">
+            <div class="text-2xl">🗂</div>
+            <span class="kbd">4</span>
+          </div>
+          <div class="text-[13px] font-bold mb-0.5">Карточки памяти</div>
+          <div class="text-[11px]" style="color: var(--muted);">20 слов с подсказками и примерами</div>
+          <div class="text-[10px] mono mt-3 flex items-center gap-2" style="color: var(--subtle);">
+            <span>480 карточек</span><span style="color: var(--success);">89% знаешь</span>
+          </div>
+        </div>
+
+        <div class="card card-hover p-4 cursor-pointer relative">
+          <div class="flex items-start justify-between mb-3">
+            <div class="text-2xl">🧒</div>
+            <span class="kbd">5</span>
+          </div>
+          <div class="text-[13px] font-bold mb-0.5">Грамматика как 5-летнему</div>
+          <div class="text-[11px]" style="color: var(--muted);">Простое объяснение + 3 ошибки</div>
+          <div class="text-[10px] mono mt-3" style="color: var(--subtle);">8 правил · новое: articles</div>
+        </div>
+
+        <div class="card card-hover p-4 cursor-pointer relative">
+          <div class="flex items-start justify-between mb-3">
+            <div class="text-2xl">🎯</div>
+            <span class="kbd">6</span>
+          </div>
+          <div class="text-[13px] font-bold mb-0.5">Квиз недели</div>
+          <div class="text-[11px]" style="color: var(--muted);">10 вопросов · ответы в конце</div>
+          <div class="text-[10px] mono mt-3 flex items-center gap-2">
+            <span style="color: var(--success);">+3 новых</span><span style="color: var(--amber);">воскресенье</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat preview — V1 compact, V3 palette -->
+      <div class="card p-0 overflow-hidden">
+        <div class="px-4 py-3 border-b flex items-center justify-between" style="border-color: var(--border-2);">
+          <div class="flex items-center gap-2">
+            <div class="w-7 h-7 rounded-md flex items-center justify-center text-sm" style="background: var(--gradient-hot);">📖</div>
+            <div>
+              <div class="text-[13px] font-semibold">Personal lesson</div>
+              <div class="text-[10px] mono" style="color: var(--muted);">past simple vs past continuous · 12 мин</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 text-[11px] mono" style="color: var(--subtle);">
+            <span>tokens: 1,240 in · 863 out</span>
+            <span class="kbd">⎋ stop</span>
+          </div>
+        </div>
+        <div class="p-4 space-y-3 max-h-96 overflow-y-auto scrollbar-slim">
+          <div class="flex gap-3">
+            <div class="w-6 h-6 rounded mono text-[10px] font-semibold flex items-center justify-center flex-shrink-0 mt-0.5" style="background: var(--surface-2); color: var(--muted); border: 1px solid var(--border-2);">AI</div>
+            <div class="chat-bubble chat-bubble-assistant flex-1">
+              Alright, let's warm up. Tell me about your weekend — what did you do? I'll catch any mistakes as we go.
+            </div>
+          </div>
+          <div class="flex gap-3 flex-row-reverse">
+            <div class="w-6 h-6 rounded mono text-[10px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5" style="background: var(--gradient-hot); color: white;">АГ</div>
+            <div class="chat-bubble chat-bubble-user flex-1">
+              On weekend I was going to forest with my friend. We was walking and talking about life.
+            </div>
+          </div>
+          <div class="flex gap-3">
+            <div class="w-6 h-6 rounded mono text-[10px] font-semibold flex items-center justify-center flex-shrink-0 mt-0.5" style="background: var(--surface-2); color: var(--muted); border: 1px solid var(--border-2);">AI</div>
+            <div class="chat-bubble chat-bubble-assistant flex-1">
+              Nice plan! Three quick fixes:
+              <div class="mt-2.5 space-y-1.5 text-[12px]">
+                <div class="p-2 rounded-md" style="background: rgba(249, 112, 102, 0.08); border: 1px solid rgba(249, 112, 102, 0.2);">
+                  <span class="underline-fix">On weekend</span> → <span class="underline-ok font-medium" style="color: var(--content);">At the weekend</span> / <span class="underline-ok font-medium" style="color: var(--content);">On the weekend</span>
+                  <span class="text-[10px] mono ml-1" style="color: var(--muted);">BrE / AmE</span>
+                </div>
+                <div class="p-2 rounded-md" style="background: rgba(249, 112, 102, 0.08); border: 1px solid rgba(249, 112, 102, 0.2);">
+                  <span class="underline-fix">I was going</span> → <span class="underline-ok font-medium" style="color: var(--content);">I went</span>
+                  <span class="text-[10px] mono ml-1" style="color: var(--muted);">completed action</span>
+                </div>
+                <div class="p-2 rounded-md" style="background: rgba(249, 112, 102, 0.08); border: 1px solid rgba(249, 112, 102, 0.2);">
+                  <span class="underline-fix">We was walking</span> → <span class="underline-ok font-medium" style="color: var(--content);">We were walking</span>
+                  <span class="text-[10px] mono ml-1" style="color: var(--muted);">plural agreement</span>
+                </div>
+              </div>
+              <div class="mt-3 pt-2.5 border-t text-[11px] flex items-center gap-2" style="border-color: var(--border-2); color: var(--muted);">
+                💾 Сохранил в <span class="chip chip-violet">common errors</span> Продолжишь? <span class="stream-dot"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="px-4 py-3 border-t flex items-center gap-2" style="border-color: var(--border-2);">
+          <input type="text" placeholder="Reply in English, mistakes welcome..." class="flex-1 bg-transparent text-[13px] focus:outline-none" />
+          <button class="btn btn-ghost"><span class="kbd">/</span> switch</button>
+          <button class="btn btn-primary">Send <span class="kbd" style="background: rgba(255,255,255,0.2); border-color: transparent; color: white;">↵</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS SECTION -->
+    <section id="skills" class="p-6 border-b" style="border-color: var(--border-2);">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="text-[11px] mono uppercase tracking-wider" style="color: var(--subtle);">// skills</div>
+        <div class="flex-1 section-divider"></div>
+        <button class="btn btn-ghost">+ Новый навык</button>
+      </div>
+
+      <h2 class="text-[22px] font-bold mb-0.5 leading-tight">Твой <span class="serif-italic text-[24px] gradient-text-cool">growth</span> стек</h2>
+      <p class="text-sm mb-4" style="color: var(--muted);">3 активных · 1 архивный</p>
+
+      <div class="grid grid-cols-[320px_1fr] gap-3">
+        <!-- Skills list -->
+        <div class="space-y-2">
+          <div class="card p-3 cursor-pointer card-glow" style="border-color: rgba(249, 112, 102, 0.4);">
+            <div class="flex items-center gap-2.5 mb-2">
+              <div class="w-8 h-8 rounded flex items-center justify-center text-base" style="background: var(--coral-soft);">🇬🇧</div>
+              <div class="flex-1 min-w-0">
+                <div class="text-[13px] font-bold">Английский</div>
+                <div class="text-[10px] mono" style="color: var(--subtle);">B1 · 7 узлов · 23 урока</div>
+              </div>
+              <span class="chip chip-coral mono">active</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="flex-1 h-1 rounded-full" style="background: var(--border-2);">
+                <div class="h-full rounded-full" style="width: 58%; background: var(--gradient-hot);"></div>
+              </div>
+              <span class="text-[11px] mono font-bold gradient-text">58%</span>
+            </div>
+          </div>
+
+          <div class="card card-hover p-3 cursor-pointer">
+            <div class="flex items-center gap-2.5 mb-2">
+              <div class="w-8 h-8 rounded flex items-center justify-center text-base" style="background: var(--surface-2);">🤖</div>
+              <div class="flex-1 min-w-0">
+                <div class="text-[13px] font-bold">Вайбкодинг</div>
+                <div class="text-[10px] mono" style="color: var(--subtle);">12 узлов · radar-linked</div>
+              </div>
+              <span class="chip chip-violet mono">📡 3 new</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="flex-1 h-1 rounded-full" style="background: var(--border-2);">
+                <div class="h-full rounded-full" style="width: 34%; background: var(--gradient-cool);"></div>
+              </div>
+              <span class="text-[11px] mono" style="color: var(--violet);">34%</span>
+            </div>
+          </div>
+
+          <div class="card card-hover p-3 cursor-pointer">
+            <div class="flex items-center gap-2.5 mb-2">
+              <div class="w-8 h-8 rounded flex items-center justify-center text-base" style="background: var(--surface-2);">⚛️</div>
+              <div class="flex-1 min-w-0">
+                <div class="text-[13px] font-bold">Next.js 16</div>
+                <div class="text-[10px] mono" style="color: var(--subtle);">9 узлов · только начал</div>
+              </div>
+              <span class="chip mono">🌱 new</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="flex-1 h-1 rounded-full" style="background: var(--border-2);">
+                <div class="h-full rounded-full" style="width: 15%; background: linear-gradient(to right, #06b6d4, #3b82f6);"></div>
+              </div>
+              <span class="text-[11px] mono" style="color: #3b82f6;">15%</span>
+            </div>
+          </div>
+
+          <button class="card card-hover p-3 w-full text-left text-[12px] flex items-center justify-center gap-2" style="color: var(--muted); border-style: dashed;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 5v14M5 12h14"/></svg>
+            Plant a new skill
+          </button>
+        </div>
+
+        <!-- Roadmap -->
+        <div class="card p-5">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-xl">🇬🇧</span>
+                <h3 class="text-[17px] font-bold">Английский <span class="serif-italic text-lg" style="color: var(--muted);">— roadmap</span></h3>
+                <span class="chip mono">7 узлов</span>
+              </div>
+              <div class="text-[11px] mono" style="color: var(--muted);">23 урока · 58% · focus: <span class="gradient-text font-semibold">Perfect Tenses</span></div>
+            </div>
+            <button class="btn btn-ghost">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+              Редактировать
+            </button>
+          </div>
+
+          <div class="space-y-1 text-[13px]">
+            <div class="relative">
+              <div class="flex items-center gap-2 py-1.5">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+                <div class="w-4 h-4 rounded flex items-center justify-center flex-shrink-0" style="background: var(--success);">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                <span class="font-semibold flex-1">Основы грамматики</span>
+                <span class="dot-progress"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></span>
+                <span class="text-[11px] mono" style="color: var(--success);">5/5</span>
+              </div>
+              <div class="tree-line"></div>
+              <div class="tree-child">
+                <div class="flex items-center gap-2 py-1" style="color: var(--muted);">
+                  <div class="w-3.5 h-3.5 rounded flex items-center justify-center flex-shrink-0" style="background: var(--success);">
+                    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>
+                  </div>
+                  Present Simple & Present Continuous
+                </div>
+                <div class="flex items-center gap-2 py-1" style="color: var(--muted);">
+                  <div class="w-3.5 h-3.5 rounded flex items-center justify-center flex-shrink-0" style="background: var(--success);">
+                    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>
+                  </div>
+                  Past Simple & Past Continuous
+                </div>
+              </div>
+            </div>
+
+            <div class="relative">
+              <div class="flex items-center gap-2 py-1.5">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+                <div class="w-4 h-4 rounded glow-ring flex items-center justify-center flex-shrink-0" style="background: var(--surface-2);">
+                  <div class="w-1.5 h-1.5 rounded-full" style="background: var(--coral); box-shadow: 0 0 6px var(--coral);"></div>
+                </div>
+                <span class="font-semibold flex-1">Perfect Tenses</span>
+                <span class="chip chip-coral mono">● now</span>
+                <span class="dot-progress"><span class="on"></span><span class="on"></span><span></span><span></span><span></span></span>
+                <span class="text-[11px] mono gradient-text font-bold">2/5</span>
+              </div>
+              <div class="tree-line"></div>
+              <div class="tree-child space-y-0.5">
+                <div class="flex items-center gap-2 py-1" style="color: var(--muted);">
+                  <div class="w-3.5 h-3.5 rounded flex items-center justify-center flex-shrink-0" style="background: var(--success);">
+                    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>
+                  </div>
+                  Present Perfect basics
+                </div>
+                <div class="flex items-center gap-2 py-1 font-medium" style="color: var(--content);">
+                  <div class="w-3.5 h-3.5 rounded glow-ring flex items-center justify-center flex-shrink-0" style="background: var(--surface-2);">
+                    <div class="w-1.5 h-1.5 rounded-full" style="background: var(--coral);"></div>
+                  </div>
+                  Present Perfect vs Past Simple
+                  <span class="chip chip-coral mono ml-auto">→ resume</span>
+                </div>
+                <div class="flex items-center gap-2 py-1" style="color: var(--muted);">
+                  <div class="w-3.5 h-3.5 rounded border flex-shrink-0" style="border-color: var(--border);"></div>
+                  Past Perfect
+                </div>
+                <div class="flex items-center gap-2 py-1" style="color: var(--muted);">
+                  <div class="w-3.5 h-3.5 rounded border flex-shrink-0" style="border-color: var(--border);"></div>
+                  Future Perfect <span class="chip chip-violet mono ml-auto">✨ generate</span>
+                </div>
+                <div class="flex items-center gap-2 py-1" style="color: var(--muted);">
+                  <div class="w-3.5 h-3.5 rounded border flex-shrink-0" style="border-color: var(--border);"></div>
+                  Perfect Continuous
+                </div>
+              </div>
+            </div>
+
+            <div class="relative" style="color: var(--muted); opacity: 0.7;">
+              <div class="flex items-center gap-2 py-1.5">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+                <div class="w-4 h-4 rounded border flex-shrink-0" style="border-color: var(--border); border-style: dashed;"></div>
+                <span class="font-semibold flex-1">Conditionals</span>
+                <span class="dot-progress"><span></span><span></span><span></span><span></span></span>
+                <span class="text-[11px] mono" style="color: var(--subtle);">0/4</span>
+              </div>
+            </div>
+
+            <div class="relative" style="color: var(--muted); opacity: 0.7;">
+              <div class="flex items-center gap-2 py-1.5">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+                <div class="w-4 h-4 rounded border flex-shrink-0" style="border-color: var(--border); border-style: dashed;"></div>
+                <span class="font-semibold flex-1">Phrasal verbs (топ-50)</span>
+                <span class="dot-progress"><span></span><span></span><span></span></span>
+                <span class="text-[11px] mono" style="color: var(--subtle);">0/3</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RADAR SECTION -->
+    <section id="radar" class="p-6 border-b" style="border-color: var(--border-2);">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="text-[11px] mono uppercase tracking-wider" style="color: var(--subtle);">// vibecoding-radar</div>
+        <div class="flex-1 section-divider"></div>
+        <div class="text-[11px] mono" style="color: var(--muted);">синк: 2 дня назад</div>
+        <button class="btn btn-ghost mono">$ pnpm sync:radar</button>
+      </div>
+
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h2 class="text-[22px] font-bold leading-tight">Сигналы с <span class="serif-italic text-[24px] gradient-text">передовой</span></h2>
+          <p class="text-sm mt-1" style="color: var(--muted);">14 новых · 3 strong relevance</p>
+        </div>
+        <div class="flex items-center gap-1.5 flex-wrap justify-end">
+          <span class="chip chip-coral mono">all · 14</span>
+          <span class="chip mono">claude-code · 5</span>
+          <span class="chip mono">agents · 4</span>
+          <span class="chip mono">mcp · 2</span>
+          <span class="chip mono">prompts · 2</span>
+        </div>
+      </div>
+
+      <div class="space-y-2.5">
+        <div class="card card-hover p-4 cursor-pointer relative overflow-hidden">
+          <div class="absolute top-0 left-0 w-1 h-full" style="background: var(--gradient-hot);"></div>
+          <div class="flex items-start gap-3 pl-2">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                <span class="chip chip-coral mono">🔥 strong</span>
+                <span class="chip mono">anthropic-blog</span>
+                <span class="chip mono">claude-code</span>
+                <span class="chip mono">agents</span>
+                <span class="text-[11px] ml-auto mono" style="color: var(--subtle);">2 дня назад</span>
+              </div>
+              <h3 class="text-[15px] font-bold mb-1 leading-snug">Claude Code 2.7 — <span class="gradient-text">subagents</span> as first-class primitives</h3>
+              <p class="text-[12px] leading-relaxed" style="color: var(--muted);">Anthropic выкатили нативные subagent-файлы в <code class="mono text-[11px]" style="color: var(--coral);">.claude/agents/</code> с frontmatter-конфигом, tool allowlist на уровне субагента и автопредложением. Большой шаг к агентным пайплайнам.</p>
+              <div class="flex items-center gap-3 mt-2.5 text-[11px] mono" style="color: var(--subtle);">
+                <span>↗ anthropic.com/news/claude-code-2-7</span>
+                <span>•</span><span>5 мин</span>
+                <span class="chip chip-violet ml-auto">→ Вайбкодинг</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-hover p-4 cursor-pointer relative overflow-hidden">
+          <div class="absolute top-0 left-0 w-1 h-full" style="background: var(--gradient-hot);"></div>
+          <div class="flex items-start gap-3 pl-2">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                <span class="chip chip-coral mono">🔥 strong</span>
+                <span class="chip mono">r/ClaudeAI</span>
+                <span class="chip mono">prompts</span>
+                <span class="text-[11px] ml-auto mono" style="color: var(--subtle);">3 дня назад</span>
+              </div>
+              <h3 class="text-[15px] font-bold mb-1 leading-snug">"Skill files" — turning a prompt into a <span class="serif-italic text-[16px]" style="color: var(--amber);">multi-step agent</span></h3>
+              <p class="text-[12px] leading-relaxed" style="color: var(--muted);">Паттерн: .md-файлы с frontmatter + process flow в DOT → Claude Code загружает как skill → TodoWrite per checklist item → красные флажки = STOP. Переосмысление подхода к промтингу.</p>
+              <div class="flex items-center gap-3 mt-2.5 text-[11px] mono" style="color: var(--subtle);">
+                <span>↗ reddit.com/r/ClaudeAI/...</span>
+                <span>•</span><span>247 upvotes</span>
+                <span class="chip chip-violet ml-auto">→ Вайбкодинг</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-hover p-4 cursor-pointer relative overflow-hidden">
+          <div class="absolute top-0 left-0 w-1 h-full" style="background: var(--amber);"></div>
+          <div class="flex items-start gap-3 pl-2">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                <span class="chip chip-amber mono">moderate</span>
+                <span class="chip mono">vercel-changelog</span>
+                <span class="chip mono">tooling</span>
+                <span class="text-[11px] ml-auto mono" style="color: var(--subtle);">4 дня назад</span>
+              </div>
+              <h3 class="text-[15px] font-bold mb-1 leading-snug">AI Gateway: model fallbacks + observability per route</h3>
+              <p class="text-[12px] leading-relaxed" style="color: var(--muted);">Автопереключение провайдеров при rate limit, пер-роут дашборды, sub-$ per-call трекинг. Прямо релевантно для budget-guard.</p>
+              <div class="flex items-center gap-3 mt-2.5 text-[11px] mono" style="color: var(--subtle);">
+                <span>↗ vercel.com/changelog</span>
+                <span>•</span><span>3 мин</span>
+                <span class="chip chip-violet ml-auto">→ Next.js 16</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-hover p-4 cursor-pointer relative overflow-hidden">
+          <div class="absolute top-0 left-0 w-1 h-full" style="background: var(--amber);"></div>
+          <div class="flex items-start gap-3 pl-2">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                <span class="chip chip-amber mono">moderate</span>
+                <span class="chip mono">simonw.net</span>
+                <span class="chip mono">mcp</span>
+                <span class="text-[11px] ml-auto mono" style="color: var(--subtle);">5 дней назад</span>
+              </div>
+              <h3 class="text-[15px] font-bold mb-1 leading-snug">Building your own MCP server in <span class="mono gradient-text">47 lines</span></h3>
+              <p class="text-[12px] leading-relaxed" style="color: var(--muted);">Simon Willison показывает минимальную реализацию MCP-сервера на stdio. Хорошо для обучающего примера в курсе "Вайбкодинг".</p>
+              <div class="flex items-center gap-3 mt-2.5 text-[11px] mono" style="color: var(--subtle);">
+                <span>↗ simonw.net/2026/apr/...</span>
+                <span>•</span><span>8 мин</span>
+                <span class="chip chip-violet ml-auto">→ Вайбкодинг</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- JOURNAL SECTION -->
+    <section id="journal" class="p-6">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="text-[11px] mono uppercase tracking-wider" style="color: var(--subtle);">// journal</div>
+        <div class="flex-1 section-divider"></div>
+        <button class="btn btn-primary">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          Новая запись <span class="kbd" style="background: rgba(255,255,255,0.2); border-color: transparent; color: white;">N</span>
+        </button>
+      </div>
+
+      <h2 class="text-[22px] font-bold mb-0.5 leading-tight">Где <span class="serif-italic text-[24px]" style="color: var(--violet);">мысли</span> прирастают</h2>
+      <p class="text-sm mb-4" style="color: var(--muted);">Markdown · шаблоны · backlinks к навыкам</p>
+
+      <div class="grid grid-cols-[280px_1fr] gap-3">
+        <!-- Entry list -->
+        <div class="card p-0 overflow-hidden">
+          <div class="px-3 py-2.5 border-b flex items-center gap-2 text-[12px]" style="border-color: var(--border-2); color: var(--muted);">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input placeholder="Поиск по записям..." class="bg-transparent flex-1 focus:outline-none" />
+          </div>
+          <div>
+            <div class="p-3 cursor-pointer relative" style="background: var(--surface-2);">
+              <div class="absolute left-0 top-0 bottom-0 w-0.5" style="background: var(--gradient-hot);"></div>
+              <div class="flex items-center justify-between mb-1 pl-2">
+                <span class="chip chip-violet mono">weekly-retro</span>
+                <span class="text-[10px] mono" style="color: var(--subtle);">сегодня</span>
+              </div>
+              <div class="text-[13px] font-bold mb-0.5 pl-2">Неделя #4: Perfect Tenses</div>
+              <div class="text-[11px] pl-2" style="color: var(--muted);">Замечаю, что Present Perfect стал интуитивным. Past Perfect путаю с Past Simple, особенно...</div>
+            </div>
+            <div class="p-3 cursor-pointer card-hover border-t" style="border-color: var(--border-2);">
+              <div class="flex items-center justify-between mb-1">
+                <span class="chip chip-coral mono">post-lesson</span>
+                <span class="text-[10px] mono" style="color: var(--subtle);">вчера</span>
+              </div>
+              <div class="text-[13px] font-semibold mb-0.5">After Grammar-5yo: articles</div>
+              <div class="text-[11px]" style="color: var(--muted);">The/a/an всё ещё триггерит ошибки. AI объяснил через...</div>
+            </div>
+            <div class="p-3 cursor-pointer card-hover border-t" style="border-color: var(--border-2);">
+              <div class="flex items-center justify-between mb-1">
+                <span class="chip mono">daily</span>
+                <span class="text-[10px] mono" style="color: var(--subtle);">2 дня</span>
+              </div>
+              <div class="text-[13px] font-semibold mb-0.5">Daily reflection</div>
+              <div class="text-[11px]" style="color: var(--muted);">30 минут на урок. Заметил что устал и качество ответов упало...</div>
+            </div>
+            <div class="p-3 cursor-pointer card-hover border-t" style="border-color: var(--border-2);">
+              <div class="flex items-center justify-between mb-1">
+                <span class="chip mono">free</span>
+                <span class="text-[10px] mono" style="color: var(--subtle);">5 дней</span>
+              </div>
+              <div class="text-[13px] font-semibold mb-0.5">Идея: курс по Next.js 16</div>
+              <div class="text-[11px]" style="color: var(--muted);">Cache Components + PPR — начать с простого примера...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Editor -->
+        <div class="card p-5">
+          <div class="flex items-center gap-2 mb-2 flex-wrap">
+            <span class="chip chip-violet mono">weekly-retro</span>
+            <span class="chip mono">→ Английский</span>
+            <span class="chip mono">→ Perfect Tenses</span>
+            <div class="ml-auto flex items-center gap-3 text-[11px] mono" style="color: var(--subtle);">
+              <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full" style="background: var(--success);"></span> сохранено · 12 сек</span>
+            </div>
+          </div>
+          <input class="w-full text-[24px] font-bold bg-transparent mb-1 focus:outline-none" value="Неделя #4: Perfect Tenses" />
+          <div class="text-[11px] mono mb-4" style="color: var(--subtle);">21 апреля 2026 · 412 слов · 2 мин чтения</div>
+
+          <div class="space-y-4 text-[13px] leading-relaxed" style="color: var(--content);">
+            <h3 class="serif-italic text-[18px]" style="color: var(--coral);">Что получилось</h3>
+            <p>Замечаю, что <strong>Present Perfect</strong> стал интуитивным — "I've been learning" льётся без задержки. AI в Mode 2 перестал править этот паттерн в последних 5 сессиях. <span style="color: var(--muted);">Это первый раз когда я закрыл тему на уровне <em>ощущения</em>, а не правила.</span></p>
+
+            <h3 class="serif-italic text-[18px] mt-6" style="color: var(--amber);">Где тряска</h3>
+            <p><strong>Past Perfect</strong> путаю с Past Simple, особенно когда в предложении нет явного маркера "before/after". AI показал 3 свежих ошибки — все на одном паттерне:</p>
+            <blockquote class="card p-3 my-3 italic text-[13px]" style="background: var(--surface-2); color: var(--muted); border-left: 2px solid var(--coral);">
+              "When I arrived, she already leaved" → должно быть <span style="color: var(--coral);" class="font-semibold">"had left"</span>
+            </blockquote>
+
+            <h3 class="serif-italic text-[18px] mt-6" style="color: var(--violet);">План на следующую неделю</h3>
+            <ol class="space-y-1.5 ml-1" style="list-style: none;">
+              <li class="flex items-start gap-2.5">
+                <span class="w-5 h-5 rounded flex items-center justify-center text-[10px] mono font-bold flex-shrink-0 mt-0.5" style="background: var(--surface-2); border: 1px solid var(--border);">1</span>
+                <span>Пройти Mode 5 (Grammar for 5yo) по Past Perfect <span class="chip chip-coral mono ml-1">→ открыть</span></span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="w-5 h-5 rounded flex items-center justify-center text-[10px] mono font-bold flex-shrink-0 mt-0.5" style="background: var(--surface-2); border: 1px solid var(--border);">2</span>
+                <span>10 упражнений в Mode 3 · focus <span class="mono" style="color: var(--coral);">had + V3</span></span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="w-5 h-5 rounded flex items-center justify-center text-[10px] mono font-bold flex-shrink-0 mt-0.5" style="background: var(--surface-2); border: 1px solid var(--border);">3</span>
+                <span>Quiz недели в воскресенье<span class="stream-dot ml-1"></span></span>
+              </li>
+            </ol>
+          </div>
+          <div class="mt-5 pt-4 border-t flex items-center gap-2 text-[11px] mono" style="border-color: var(--border-2); color: var(--subtle);">
+            <span class="kbd">⌘</span><span class="kbd">S</span> сохранить
+            <span class="ml-2 kbd">⌘</span><span class="kbd">B</span> полужирный
+            <span class="ml-2 kbd">⌘</span><span class="kbd">/</span> AI продолжить
+            <span class="ml-auto">авто-сохранение каждые 2 сек</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="px-6 py-6 border-t text-center text-[11px] mono" style="border-color: var(--border-2); color: var(--subtle);">
+      Прокачка · <span class="gradient-text">shipping your brain</span> · v0.1.0 alpha
+    </footer>
+  </main>
+</div>
+
+<script>
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+</script>
+</body>
+</html>

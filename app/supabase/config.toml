@@ -1,0 +1,10 @@
+project_id = "personal-skills-platform"
+
+[db]
+port = 54322
+
+[api]
+port = 54321
+
+[auth]
+enable_signup = true

@@ -1,0 +1,51 @@
+# ─── Node / Next.js ───────────────────────────────────────────────────────
+**/node_modules/
+**/.next/
+**/out/
+**/build/
+**/.vercel/
+**/*.tsbuildinfo
+**/next-env.d.ts
+**/.pnp
+**/.pnp.*
+
+# ─── Environment — NEVER commit real keys ─────────────────────────────────
+**/.env
+**/.env.*
+!**/.env.example
+
+# ─── Logs & debug ─────────────────────────────────────────────────────────
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+**/.pnpm-debug.log*
+**/coverage/
+
+# ─── IDE / OS ─────────────────────────────────────────────────────────────
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.swp
+
+# ─── Playwright / MCP transient ───────────────────────────────────────────
+.playwright-mcp/
+**/playwright-report/
+**/test-results/
+
+# ─── Debug screenshots (ad-hoc captures at repo root) ─────────────────────
+/*.jpg
+/*.png
+!/docs/**/*.png
+!/docs/**/*.jpg
+
+# ─── User-scoped: sibling project that isn't part of Vibebase ─────────────
+autoresearch-genealogy-main/
+
+# ─── Claude Code local state ──────────────────────────────────────────────
+.claude/settings.local.json
+**/.claude/settings.local.json
+
+# ─── Misc ─────────────────────────────────────────────────────────────────
+*.pem
+.cache/
